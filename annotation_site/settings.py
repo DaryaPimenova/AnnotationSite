@@ -39,7 +39,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'AnnotationSite.urls'
+ROOT_URLCONF = 'annotation_site.urls'
 
 TEMPLATES = [
     {
@@ -57,7 +57,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'AnnotationSite.wsgi.application'
+WSGI_APPLICATION = 'annotation_site.wsgi.application'
 
 
 # Database
