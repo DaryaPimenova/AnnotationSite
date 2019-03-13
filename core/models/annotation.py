@@ -11,11 +11,10 @@ class Annotation(models.Model):
     style = models.CharField(u'Стиль', max_length=64, default='')
     sense = models.CharField(u'Смысл', max_length=128, default='')
 
-    # Оставлю определения координат пока в таком виде. Позже попробую сделать "лучше"
-    point_one_x = models.PositiveSmallIntegerField()
-    point_one_y = models.PositiveSmallIntegerField()
-    point_two_x = models.PositiveSmallIntegerField()
-    point_two_y = models.PositiveSmallIntegerField()
+    left = models.PositiveSmallIntegerField()
+    top = models.PositiveSmallIntegerField()
+    right = models.PositiveSmallIntegerField()
+    bottom = models.PositiveSmallIntegerField()
 
     class Meta:
         db_table = 'annotation'
