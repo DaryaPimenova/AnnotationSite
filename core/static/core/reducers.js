@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import login from './components/forms/reducers';
+import signing from './components/forms/reducers';
 
 const rootReducer = combineReducers({
-    login,
+    signing,
 });
 
 export default rootReducer;

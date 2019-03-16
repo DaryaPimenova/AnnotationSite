@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { signIn } from './actions';
 
-export default class SignInForm extends Component {
+
+class SignInForm extends Component {
     constructor() {
         super();
 
@@ -10,7 +14,6 @@ export default class SignInForm extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(e) {
@@ -23,17 +26,12 @@ export default class SignInForm extends Component {
         });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-
-        console.log('The form was submitted with the following data:');
-        console.log(this.state);
-    }
-
     render() {
+        const { isFetching, signIn } = this.props;
+
         return (
           <div className="form-center">
-              <form onSubmit={this.handleSubmit} className="form-fields" onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleSubmit} method='POST' className="form-fields" onSubmit={signIn}>
                   <div className="form-field">
                       <label className="form-field-label" htmlFor="email">Логин</label>
                       <input type="text" 
@@ -64,3 +62,23 @@ export default class SignInForm extends Component {
         );
     }
 }
+
+SignInForm.propTypes = {
+    isFetching: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => {
+    return {
+        isFetching: state.signing.isFetching,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signIn() {
+            dispatch(signIn());
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
