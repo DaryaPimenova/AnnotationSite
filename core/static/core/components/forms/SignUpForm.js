@@ -1,44 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { signUp } from './actions';
 
+class SignUpForm extends Component {
 
-export default class SignUpForm extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            email: '',
-            login: '',
-            password: '',
-            name: '',
-            hasAgreed: false
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(e) {
-        let target = e.target;
-        let value = target.type === 'checkbox' ? target.checked : target.value;
-        let name = target.name;
-
-        this.setState({
-          [name]: value
-        });
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-
-        console.log('The form was submitted with the following data:');
-        console.log(this.state);
+    onSignUp = (event) => {
+        event.preventDefault();
+        this.props.signUp(event.target);
     }
 
     render() {
         return (
         <div className="form-center">
             <h2>Создайте свой личный аккаунт:</h2>
-            <form onSubmit={this.handleSubmit} className="form-fields">
+            <form onSubmit={this.onSignUp} className="form-fields">
                 <div className="form-field">
                     <label className="form-field-label" htmlFor="name">Имя</label>
                     <input type="text" 
@@ -46,8 +22,6 @@ export default class SignUpForm extends Component {
                            className="form-field-input" 
                            placeholder="Имя" 
                            name="name" 
-                           value={this.state.name} 
-                           onChange={this.handleChange} 
                     />
                 </div>
                 <div className="form-field">
@@ -57,8 +31,6 @@ export default class SignUpForm extends Component {
                            className="form-field-input" 
                            placeholder="логин" 
                            name="login" 
-                           value={this.state.email} 
-                           onChange={this.handleChange} 
                     />
                 </div>
                 <div className="form-field">
@@ -68,8 +40,6 @@ export default class SignUpForm extends Component {
                            className="form-field-input" 
                            placeholder="пароль" 
                            name="password" 
-                           value={this.state.password} 
-                           onChange={this.handleChange} 
                     />
                 </div>
                 <div className="formfield">
@@ -78,9 +48,7 @@ export default class SignUpForm extends Component {
                            id="email" 
                            className="form-field-input" 
                            placeholder="e-mail" 
-                           name="email" 
-                           value={this.state.email} 
-                           onChange={this.handleChange} 
+                           name="email"
                     />
                 </div>
                 <div className="form-field">
@@ -91,3 +59,23 @@ export default class SignUpForm extends Component {
         );
     }
 }
+
+SignUpForm.propTypes = {
+    isFetching: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => {
+    return {
+        isFetching: state.signing.isFetching,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signUp(form) {
+            dispatch(signUp(form));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);

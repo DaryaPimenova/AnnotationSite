@@ -5,25 +5,10 @@ import { signIn } from './actions';
 
 
 class SignInForm extends Component {
-    constructor() {
-        super();
 
-        this.state = {
-            login: '',
-            password: ''
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
-        let target = e.target;
-        let value = target.type === 'checkbox' ? target.checked : target.value;
-        let name = target.name;
-
-        this.setState({
-            [name]: value
-        });
+    onSignIn = (event) => {
+        event.preventDefault();
+        this.props.signIn(event.target);
     }
 
     render() {
@@ -31,16 +16,14 @@ class SignInForm extends Component {
 
         return (
           <div className="form-center">
-              <form onSubmit={this.handleSubmit} method='POST' className="form-fields" onSubmit={signIn}>
+              <form className="form-fields" method='post' onSubmit={this.onSignIn.bind(this)}>
                   <div className="form-field">
-                      <label className="form-field-label" htmlFor="email">Логин</label>
+                      <label className="form-field-label" htmlFor="email">Логинdddd</label>
                       <input type="text" 
                              id="login" 
                              className="form-field-input" 
                              placeholder="логин" 
-                             name="login" 
-                             value={this.state.email} 
-                             onChange={this.handleChange} 
+                             name="login"
                       />
                   </div>
                   <div className="form-field">
@@ -49,9 +32,7 @@ class SignInForm extends Component {
                              id="password" 
                              className="form-field-input" 
                              placeholder="пароль" 
-                             name="password" 
-                             value={this.state.password} 
-                             onChange={this.handleChange} 
+                             name="password"
                       />
                   </div>
                   <div className="form-field">
@@ -75,8 +56,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signIn() {
-            dispatch(signIn());
+        signIn(name) {
+            dispatch(signIn(name));
         },
     };
 };

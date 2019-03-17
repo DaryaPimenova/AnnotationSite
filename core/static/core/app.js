@@ -1,4 +1,5 @@
 import 'app.less';
+import "jquery"
 import React from 'react';
 import {Base} from 'components';
 import ReactDOM from 'react-dom';

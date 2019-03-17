@@ -33,11 +33,20 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if 'django.middleware.csrf.CsrfViewMiddleware' not in MIDDLEWARE:
+    print('#'*100)
+    print('#'*100)
+    print('django.middleware.csrf.CsrfViewMiddleware not in MIDDLEWARE')
+    print('НЕОБХОДИМО РАЗОБРАТЬСЯ, ЧЕМ МОЖНО ЗАМЕНИТЬ ДАННУЮ МИДЛВАРЬ')
+    print('ИЛИ РАЗОБРАТЬСЯ, КАК ПОДМЕШАТЬ CSRF_TOKEN в ajax-запросы') 
+    print('#'*100)
+    print('#'*100)
 
 ROOT_URLCONF = 'annotation_site.urls'
 
