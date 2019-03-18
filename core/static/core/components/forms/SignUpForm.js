@@ -13,7 +13,6 @@ class SignUpForm extends Component {
     render() {
         return (
         <div className="form-center">
-            <h2>Создайте свой личный аккаунт:</h2>
             <form onSubmit={this.onSignUp} className="form-fields">
                 <div className="form-field">
                     <label className="form-field-label" htmlFor="name">Имя</label>

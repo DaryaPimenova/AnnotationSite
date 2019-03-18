@@ -18,7 +18,7 @@ class SignInForm extends Component {
           <div className="form-center">
               <form className="form-fields" method='post' onSubmit={this.onSignIn.bind(this)}>
                   <div className="form-field">
-                      <label className="form-field-label" htmlFor="email">Логинdddd</label>
+                      <label className="form-field-label" htmlFor="email">Логин</label>
                       <input type="text" 
                              id="login" 
                              className="form-field-input" 

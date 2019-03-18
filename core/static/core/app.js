@@ -1,5 +1,6 @@
 import 'app.less';
-import "jquery"
+import 'jquery';
+import "bootstrap/dist/css/bootstrap.css"
 import React from 'react';
 import {Base} from 'components';
 import ReactDOM from 'react-dom';
