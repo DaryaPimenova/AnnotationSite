@@ -7,8 +7,8 @@ export default class Menu extends React.Component {
     render() {
         return (
         <div>
-            <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light">
-                <button class="navbar-toggler" 
+            <nav className="navbar navbar-dark bg-dark navbar-expand-lg navbar-light">
+                <button className="navbar-toggler"
                         type="button" 
                         data-toggle="collapse" 
                         data-target="#navbarText" 
@@ -16,21 +16,30 @@ export default class Menu extends React.Component {
                         aria-expanded="false" 
                         aria-label="Toggle navigation"
                 >
-                    <span class="navbar-toggler-icon"></span>
+                    <span className="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarText">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
+                <div className="collapse navbar-collapse" id="navbarText">
+                {this.props.isAuthenticated ?
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item nav-link">
+                                <a onClick={this.props.logout} >Выйти</a>
+
+                        </li>
+                    </ul>
+                    :
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item">
                             <NavLink to="/login" activeClassName="nav-link" className="nav-link">
                                 Войти
                             </NavLink>
                         </li>
-                        <li class="nav-item">
-                            <NavLink exact to="/signup" activeClassName="nav-link" className="nav-link">
+                        <li className="nav-item">
+                            <NavLink exact to="/register" activeClassName="nav-link" className="nav-link">
                                 Зарегистрироваться
                             </NavLink>
                         </li>
                     </ul>
+                }
                 </div>
             </nav>
         </div>

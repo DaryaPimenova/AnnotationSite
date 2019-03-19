@@ -16,7 +16,7 @@ import NotFound from "./components/NotFound"
 
 
 
-let store = createStore(ponyApp, applyMiddleware(thunk));
+let store = createStore(annotationApp, applyMiddleware(thunk));
 
 
 class RootContainerComponent extends Component {

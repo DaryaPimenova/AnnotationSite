@@ -93,7 +93,7 @@ entries.forEach(function (entry) {
     targets.push({
         cache: true,
         context: path.resolve(path.dirname(entry)),
-        entry: './app.js',
+        entry: './main.js',
         optimization: {
             minimize: !watch,
         },
