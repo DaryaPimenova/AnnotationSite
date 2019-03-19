@@ -53,7 +53,7 @@ class SignUpForm extends Component {
                             placeholder="Пароль"
                             title="Пожалуйста, заполните это поле"
                             required="required"
-                            onChange={e => this.setState({username: e.target.value})}
+                            onChange={e => this.setState({password: e.target.value})}
                         />
                         <input
                             type="email"
@@ -86,7 +86,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        register: (username, password) => dispatch(auth.register(username, password)),
+        register: (username, email, password) => dispatch(auth.register(username, email, password)),
         logout: () => dispatch(auth.logout()),
     };
 }
