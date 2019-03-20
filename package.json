@@ -1,5 +1,5 @@
 {
-  "name": "document_edo_acts",
+  "name": "annotation_site",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
@@ -8,7 +8,7 @@
     "watch": "./node_modules/webpack/bin/webpack.js --progress --watch --color",
     "build": "NODE_ENV=1 PLATFORM=web ./node_modules/webpack/bin/webpack.js --progress -p --color"
   },
-  "author": "zreiby",
+  "author": "vladislavvasyukov",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.2.1",
