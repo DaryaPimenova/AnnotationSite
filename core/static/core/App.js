@@ -8,12 +8,13 @@ import thunk from "redux-thunk";
 import {auth} from "./actions";
 import annotationApp from "./reducers";
 
-import SignInForm from "./components/SignInForm"
-import Annotation from "./components/Annotation"
-import SignUpForm from "./components/SignUpForm"
-import Menu from "./components/Menu"
-import NotFound from "./components/NotFound"
-
+import {
+    SignInForm,
+    SignUpForm,
+    ImageAnnotation,
+    Menu,
+    NotFound
+} from "./components"
 
 
 let store = createStore(annotationApp, applyMiddleware(thunk));
@@ -42,7 +43,7 @@ class RootContainerComponent extends Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <PrivateRoute exact path="/" component={Annotation} />
+                    <PrivateRoute exact path="/" component={ImageAnnotation} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />
                     <Route component={NotFound} />
