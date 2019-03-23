@@ -1,7 +1,7 @@
-import * as menu from "./Menu";
-import * as annotation from "./Annotation";
-import * as signin from "./SignInForm";
-import * as signup from "./SignUpForm";
+import Menu from "./Menu";
+import NotFound from "./NotFound";
+import ImageAnnotation from "./ImageAnnotation";
+import SignInForm from "./SignInForm";
+import SignUpForm from "./SignUpForm";
 
-
-export {menu, signup, signin, annotation}
+export {Menu, ImageAnnotation, SignInForm, SignUpForm}
