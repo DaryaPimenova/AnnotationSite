@@ -3,11 +3,7 @@ from rest_framework.response import Response
 
 from knox.models import AuthToken
 
-from .serializers import (CreateUserSerializer, 
-                          UserSerializer, 
-                          LoginUserSerializer, 
-                          CreateAnnotationsSerializer, 
-                          ImageSerializer)
+from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, ImageSerializer
 
 
 class RegistrationAPI(generics.GenericAPIView):
@@ -44,16 +40,10 @@ class UserAPI(generics.RetrieveAPIView):
         return self.request.user
 
 
-class AnnotationsApi(generics.GenericAPIView):
-    serializer_class = CreateAnnotationsSerializer
-
-    def post(self, request, *args, **kwargs):
-        pass
-
-
-class ImageApi(viewsets.ModelViewSet):
+class ImageAPI(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = ImageSerializer
 
     def get_object(self):
-        print('\n\nTHIS IS {}\n\n'.format(self))
+        from core.models import Image
+        return Image.objects.random_non_annotated(self.request.user)

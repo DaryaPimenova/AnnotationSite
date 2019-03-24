@@ -72,7 +72,7 @@ class ImageAnnotation extends React.Component {
     }
 
     render() {
-        const { isAuthenticated, logout, saveAnnotations, loadImage, imageUrl } = this.props;
+        const { isAuthenticated, logout, saveAnnotations, loadImage, image_url } = this.props;
 
         return (
             <div>
@@ -81,7 +81,7 @@ class ImageAnnotation extends React.Component {
                     <Col>
                         <div className='image-annotation'>
                             <Annotation                    
-                                src={imageUrl}
+                                src={image_url}
                                 annotations={this.state.annotations}
                                 type={this.state.type}
                                 value={this.state.annotation}
@@ -166,7 +166,7 @@ class ImageAnnotation extends React.Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.user,
-        imageUrl: state.annotation.imageUrl,
+        image_url: state.annotation.image_url,
     }
 }
 

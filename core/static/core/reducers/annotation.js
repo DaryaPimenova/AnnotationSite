@@ -3,7 +3,7 @@ import C from '../constants';
 
 const initialState = {
     isLoading: true,
-    imageUrl: 'media/annotated_images/wtf.jpg', // only for test!!!
+    image_url: 'media/annotated_images/wtf.jpg', // only for test!!!
     errors: {},
 };
 

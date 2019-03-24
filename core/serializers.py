@@ -28,38 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username')
 
 
-class LoginUserSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        user = authenticate(**data)
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError("Unable to log in with provided credentials.")
-
-
-class CreateAnnotationsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Annotation
-        fields = (
-            'id', 'image', 'user', 'remark', 'style', 'sense', 'left', 'top', 'right', 'bottom'
-        )
-
-    def create(self, validated_data):
-        annotation = Annotation.objects.create(
-            image=validated_data['image'],
-            user=validated_data['user'],
-            remark=validated_data['remark'],
-            style=validated_data['style'],
-            sense=validated_data['sense'],
-            left=validated_data['left'],
-            top=validated_data['top'],
-            right=validated_data['right'],
-            bottom=validated_data['bottom'],
-        )
-
-
 class ImageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
 
@@ -70,3 +38,14 @@ class ImageSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_image_url(obj):
         return obj.image_file.url
+
+
+class LoginUserSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        user = authenticate(**data)
+        if user and user.is_active:
+            return user
+        raise serializers.ValidationError("Unable to log in with provided credentials.")

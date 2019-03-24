@@ -37,10 +37,15 @@ export const saveAnnotations = (annotations) => {
 export const loadImage = () => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};
+        let {token} = getState().auth;
+
+        if (token) {
+            headers["Authorization"] = `Token ${token}`;
+        }
 
         dispatch({type: C.LOAD_IMAGE_REQUEST});
 
-        return fetch("/api/load_image/", {headers, method: "POST"})
+        return fetch("/api/annotations/load_image/", {headers, })
             .then(res => {
                 if (res.status < 500) {
                     return res.json().then(data => {
@@ -53,6 +58,7 @@ export const loadImage = () => {
             })
             .then(res => {
                 if (res.status === 200) {
+                    console.log('image_data', res.data)
                     dispatch({type: C.LOAD_IMAGE_SUCCESSFUL, data: res.data });
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
