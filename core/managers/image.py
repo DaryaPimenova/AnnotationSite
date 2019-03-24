@@ -9,10 +9,10 @@ class ImageManager(models.Manager):
         Выбираем случайную картинку, которую пользователь до этого ещё не размечал
         """
         images = self.exclude(annotation__user=user)
-        count = self.count()
+        count = images.count()
         random_index = randint(0, count - 1)
 
-        return self.all()[random_index]
+        return images[random_index]
 
     def create_from_path(self, path_to_file):
         f = open(path_to_file, 'rb')
