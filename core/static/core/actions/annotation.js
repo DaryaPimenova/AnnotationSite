@@ -1,10 +1,16 @@
 import C from '../constants';
 
 
-export const saveAnnotations = (annotations) => {
+export const saveAnnotations = (annotations, image_id) => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};
-        let body = JSON.stringify({annotations});
+        let body = JSON.stringify({annotations, image_id});
+
+        let {token} = getState().auth;
+
+        if (token) {
+            headers["Authorization"] = `Token ${token}`;
+        }
 
         dispatch({type: C.SAVE_ANNOTATIONS_REQUEST});
 
@@ -21,7 +27,8 @@ export const saveAnnotations = (annotations) => {
             })
             .then(res => {
                 if (res.status === 200) {
-                    dispatch({type: C.SAVE_ANNOTATIONS_SUCCESSFUL, data: res.data });
+                    console.log('asdf', res.data)
+                    dispatch({type: C.SAVE_ANNOTATIONS_SUCCESSFUL, data: res.data.image });
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
                     dispatch({type: C.SAVE_ANNOTATIONS_FAILED, data: res.data});
@@ -58,8 +65,8 @@ export const loadImage = () => {
             })
             .then(res => {
                 if (res.status === 200) {
-                    console.log('image_data', res.data)
                     dispatch({type: C.LOAD_IMAGE_SUCCESSFUL, data: res.data });
+                    console.log(res.data)
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
                     dispatch({type: C.LOAD_IMAGE_FAILED, data: res.data});

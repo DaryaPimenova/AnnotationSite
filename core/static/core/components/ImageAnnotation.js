@@ -19,6 +19,8 @@ class ImageAnnotation extends React.Component {
         focusName: '',
     }
 
+    focusedInputs = {}
+
     onChange = (annotation) => {
         this.setState({ annotation })
     }
@@ -57,7 +59,7 @@ class ImageAnnotation extends React.Component {
 
     onSaveAnnotations = (event) => {
         event.preventDefault();
-        this.props.saveAnnotations(event.target);
+        this.props.saveAnnotations(this.state.annotations, this.props.image_id);
     }
 
     onLoadNextImage = (event) => {
@@ -71,8 +73,28 @@ class ImageAnnotation extends React.Component {
         this.setState({annotations})
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.image_id != this.props.image_id) {
+            this.setState({
+                annotations: [],
+                annotation: {},
+                focusName: '',
+            })
+        }
+        else if (this.state.focusName) {
+            let focusName = this.state.focusName;
+            let focusInput = this.focusedInputs[focusName];
+            if (focusInput) {
+                focusInput.focus()
+                focusInput.selectionStart = focusInput.value.length;
+            }
+        }
+    }
+
     render() {
         const { isAuthenticated, logout, saveAnnotations, loadImage, image_url } = this.props;
+
+        console.log(this.props.image_id)
 
         return (
             <div>
@@ -103,7 +125,7 @@ class ImageAnnotation extends React.Component {
                                     <input 
                                         type='text' 
                                         value={annotation.data.remark}
-                                        autoFocus={this.state.focusName == `${id}remark`}
+                                        ref={(input) => {this.focusedInputs[`${id}remark`] = input}}
                                         onChange={e => this.onChangeAnnotations(
                                             annotation,
                                             id,
@@ -116,7 +138,7 @@ class ImageAnnotation extends React.Component {
                                     <input 
                                         type='text' 
                                         value={annotation.data.style}
-                                        autoFocus={this.state.focusName == `${id}style`}
+                                        ref={(input) => {this.focusedInputs[`${id}style`] = input}}
                                         onChange={e => this.onChangeAnnotations(
                                             annotation,
                                             id,
@@ -129,7 +151,7 @@ class ImageAnnotation extends React.Component {
                                     <input 
                                         type='text' 
                                         value={annotation.data.sense}
-                                        autoFocus={this.state.focusName == `${id}sense`}
+                                        ref={(input) => {this.focusedInputs[`${id}sense`] = input}}
                                         onChange={e => this.onChangeAnnotations(
                                             annotation,
                                             id,
@@ -167,13 +189,14 @@ const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.user,
         image_url: state.annotation.image_url,
+        image_id: state.annotation.image_id,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         logout: () => dispatch(auth.logout()),
-        saveAnnotations: () => dispatch(annotation.saveAnnotations()),
+        saveAnnotations: (annotations) => dispatch(annotation.saveAnnotations(annotations)),
         loadImage: () => dispatch(annotation.loadImage()),
     };
 }

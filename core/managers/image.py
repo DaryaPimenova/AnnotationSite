@@ -1,18 +1,7 @@
 from django.db import models
-from random import randint
 
 
 class ImageManager(models.Manager):
-
-    def random_non_annotated(self, user):
-        """
-        Выбираем случайную картинку, которую пользователь до этого ещё не размечал
-        """
-        images = self.exclude(annotation__user=user)
-        count = images.count()
-        random_index = randint(0, count - 1)
-
-        return images[random_index]
 
     def create_from_path(self, path_to_file):
         f = open(path_to_file, 'rb')

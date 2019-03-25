@@ -4,6 +4,7 @@ import C from '../constants';
 const initialState = {
     isLoading: true,
     image_url: 'media/annotated_images/wtf.jpg', // only for test!!!
+    image_id: -1,
     errors: {},
 };
 
@@ -42,7 +43,7 @@ export default function annotation(state=initialState, action) {
         case C.LOAD_IMAGE_SUCCESSFUL: 
             return {
                 ...state,
-                ...action.data, 
+                ...action.data,
                 isLoading: false,
                 errors: null
             }
