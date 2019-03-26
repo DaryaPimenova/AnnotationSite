@@ -1,14 +1,59 @@
+import C from '../constants';
+
+
 const initialState = {
-    isLoading: true
+    isLoading: true,
+    image_url: 'media/annotated_images/wtf.jpg', // only for test!!!
+    image_id: -1,
+    errors: {},
 };
 
 
-export default function auth(state=initialState, action) {
+export default function annotation(state=initialState, action) {
 
     switch (action.type) {
 
-        case 'IMAGE_LOADING':
-            return {...state, isLoading: true};
+        case C.SAVE_ANNOTATIONS_REQUEST: 
+            return {
+                ...state,
+                isLoading: true
+            }
+        
+        case C.SAVE_ANNOTATIONS_SUCCESSFUL: 
+            return {
+                ...state,
+                ...action.data, 
+                isLoading: false,
+                errors: null
+            }
+
+        case C.SAVE_ANNOTATIONS_FAILED: 
+            return {
+                ...state,
+                isLoading: false,
+                errors: action.data, 
+            }
+
+        case C.LOAD_IMAGE_REQUEST: 
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case C.LOAD_IMAGE_SUCCESSFUL: 
+            return {
+                ...state,
+                ...action.data,
+                isLoading: false,
+                errors: null
+            }
+
+        case C.LOAD_IMAGE_FAILED: 
+            return {
+                ...state,
+                isLoading: false,
+                errors: action.data, 
+            }
 
         default:
             return state;

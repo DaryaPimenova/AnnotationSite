@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
+from core.models import Image, Annotation
 
 
 User = get_user_model()
@@ -20,11 +21,50 @@ class CreateUserSerializer(serializers.ModelSerializer):
         )
         return user
 
+    @staticmethod
+    def validate_username(username):
+        # добавить валидацию
+        return username
+
+    @staticmethod
+    def validate_email(email):
+        # добавить валидацию
+        return email
+
+    @staticmethod
+    def validate_password(password):
+        # добавить валидацию
+        return password
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username')
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+    image_id = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Image
+        fields = ('image_id', 'image_url')
+
+    @staticmethod
+    def get_image_url(obj):
+        return obj.image_file.url
+
+    @staticmethod
+    def get_image_id(obj):
+        return obj.pk
+
+
+class AnnotationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Annotation
+        fields = ('remark', 'style', 'sense', 'bottom', 'left', 'top', 'right')
 
 
 class LoginUserSerializer(serializers.Serializer):
