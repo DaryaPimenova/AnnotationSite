@@ -21,6 +21,21 @@ class CreateUserSerializer(serializers.ModelSerializer):
         )
         return user
 
+    @staticmethod
+    def validate_username(username):
+        # добавить валидацию
+        return username
+
+    @staticmethod
+    def validate_email(email):
+        # добавить валидацию
+        return email
+
+    @staticmethod
+    def validate_password(password):
+        # добавить валидацию
+        return password
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

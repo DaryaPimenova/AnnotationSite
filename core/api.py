@@ -1,5 +1,6 @@
-from rest_framework import viewsets, permissions, generics
+from rest_framework import permissions, generics
 from rest_framework.response import Response
+from django.db import transaction
 
 from knox.models import AuthToken
 
@@ -54,19 +55,15 @@ class AnnotationSaveAPI(generics.GenericAPIView):
     serializer_class = AnnotationSerializer
 
     def post(self, request, *args, **kwargs):
+        image_id = request.data['image_id']
         annotations = self.__prepare_data(request.data)
 
-        for annotation in annotations:
-            try:
-                print(annotation)
+        with transaction.atomic():
+            for annotation in annotations:
                 serializer = self.get_serializer(data=annotation)
-                serializer.is_valid(raise_exception=True) # проверить, почему serializer ругается
-                # annotation = serializer.save()
-            except Exception as e:
-                print('\n{}\n'.format(e))
-        
-        print(self.request.user)
-        
+                serializer.is_valid(raise_exception=True)
+                serializer.save(image_id=image_id, user=request.user)
+
         return Response({
             'image': ImageSerializer(request.user.get_random_non_annotated_image()).data
         })
@@ -83,9 +80,9 @@ class AnnotationSaveAPI(generics.GenericAPIView):
                 'style': data['style'],
                 'remark': data['remark'],
                 'left': round(geometry['x']),
-                'top:': round(geometry['y']),
-                'right:': round(geometry['x'] + geometry['width']),
-                'bottom:': round(geometry['y'] + geometry['height']),
+                'top': round(geometry['y']),
+                'right': round(geometry['x'] + geometry['width']),
+                'bottom': round(geometry['y'] + geometry['height']),
             })
 
         return annotations
