@@ -16,6 +16,7 @@ class ImageAnnotation extends React.Component {
     state = {
         annotations: [],
         annotation: {},
+        activeAnnotations: [],
     }
 
     onChange = (annotation) => {
@@ -37,7 +38,7 @@ class ImageAnnotation extends React.Component {
         })
     }
 
-    onChangeAnnotations = (annotation, id, word, focusName) => {
+    onChangeAnnotations = (annotation, id, word) => {
         let annotations = [...this.state.annotations]
 
         annotations[id] = {
@@ -48,10 +49,7 @@ class ImageAnnotation extends React.Component {
             }
         }
 
-        this.setState({
-            annotations: annotations,
-            focusName: focusName,
-        })
+        this.setState({annotations})
     }
 
     onSaveAnnotations = (event) => {
@@ -70,6 +68,31 @@ class ImageAnnotation extends React.Component {
         this.setState({annotations})
     }
 
+
+    onMouseOver = (id) => e => {
+        this.setState({
+            activeAnnotations: [
+                ...this.state.activeAnnotations,
+                id
+            ]
+        })
+    }
+
+    onMouseOut = (id) => e => {
+        const index = this.state.activeAnnotations.indexOf(id)
+
+        this.setState({
+            activeAnnotations: [
+                ...this.state.activeAnnotations.slice(0, index),
+                ...this.state.activeAnnotations.slice(index + 1)
+            ]
+        })
+    }
+
+    activeAnnotationComparator = (a, b) => {
+        return a.data.id === b
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.image_id != this.props.image_id) {
             this.setState({
@@ -77,14 +100,6 @@ class ImageAnnotation extends React.Component {
                 annotation: {},
             })
         }
-        // else if (this.state.focusName) {
-        //     let focusName = this.state.focusName;
-        //     let focusInput = this.focusedInputs[focusName];
-        //     if (focusInput) {
-        //         focusInput.focus()
-        //         focusInput.selectionStart = focusInput.value.length;
-        //     }
-        // }
     }
 
     render() {
@@ -103,7 +118,8 @@ class ImageAnnotation extends React.Component {
                                 value={this.state.annotation}
                                 onChange={this.onChange}
                                 onSubmit={this.onSubmit}
-
+                                activeAnnotationComparator={this.activeAnnotationComparator}
+                                activeAnnotations={this.state.activeAnnotations}
                                 renderSelector={Selector}
                                 renderEditor={Editor}
                                 renderHighlight={Highlight}
@@ -114,7 +130,12 @@ class ImageAnnotation extends React.Component {
                     <Col>
                         <Form className='form-annotation' onSubmit={::this.onSaveAnnotations}>
                         {this.state.annotations.map((annotation, id) => (
-                            <Row key={`${id}`}>
+                            <Row
+                                className='form-row' 
+                                key={`${id}`}               
+                                onMouseOver={this.onMouseOver(annotation.data.id)}
+                                onMouseOut={this.onMouseOut(annotation.data.id)}>
+
                                 <Col>
                                     <input 
                                         type='text' 

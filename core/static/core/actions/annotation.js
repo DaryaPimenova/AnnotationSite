@@ -27,7 +27,6 @@ export const saveAnnotations = (annotations, image_id) => {
             })
             .then(res => {
                 if (res.status === 200) {
-                    console.log('asdf', res.data)
                     dispatch({type: C.SAVE_ANNOTATIONS_SUCCESSFUL, data: res.data.image });
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
@@ -66,7 +65,6 @@ export const loadImage = () => {
             .then(res => {
                 if (res.status === 200) {
                     dispatch({type: C.LOAD_IMAGE_SUCCESSFUL, data: res.data });
-                    console.log(res.data)
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
                     dispatch({type: C.LOAD_IMAGE_FAILED, data: res.data});

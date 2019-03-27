@@ -15,6 +15,7 @@ class SignUpForm extends Component {
 
     onRegister = (event) => {
         event.preventDefault();
+        console.log('ON REGISTER:', this.state.username, this.state.email, this.state.password)
         this.props.register(this.state.username, this.state.email, this.state.password);
     }
 

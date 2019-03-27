@@ -11,9 +11,15 @@ class RegistrationAPI(generics.GenericAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = serializer.save()
+        except Exception as e:
+            print('*'*100)
+            print(e)
+            print('*'*100)
+            raise e
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)
@@ -46,7 +52,6 @@ class ImageAPI(generics.RetrieveAPIView):
     serializer_class = ImageSerializer
 
     def get_object(self):
-        print(self.request.user)
         return self.request.user.get_random_non_annotated_image()
 
 
