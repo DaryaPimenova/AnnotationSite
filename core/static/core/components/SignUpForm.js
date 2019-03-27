@@ -31,8 +31,8 @@ class SignUpForm extends Component {
             <div>
                 <Menu isAuthenticated={isAuthenticated} logout={logout} />
                 <div className="signup">
-                    <h1>Регистрация</h1>
-                    <form method="post" onSubmit={this.onRegister}>
+                    <h1>Регистрация? Почему она не работает???????</h1>
+                    <form method="post">
                         {this.props.errors.length > 0 && (
                             <ul>
                                 {this.props.errors.map(error => (
@@ -64,7 +64,7 @@ class SignUpForm extends Component {
                             required="required"
                             onChange={e => this.setState({email: e.target.value})}
                         />
-                        <button type="submit" className="btn btn-primary btn-block btn-large">Зарегистрироваться</button>
+                        <button type="submit" onClick={this.onRegister} className="btn btn-primary btn-block btn-large">Зарегистрироваться</button>
                     </form>
                 </div>
             </div>
