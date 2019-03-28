@@ -98,12 +98,17 @@ class ImageAnnotation extends React.Component {
             this.setState({
                 annotations: [],
                 annotation: {},
+                activeAnnotations: [],
             })
         }
     }
 
+    componentWillMount() {
+        this.props.loadImage();
+    }
+
     render() {
-        const { isAuthenticated, logout, saveAnnotations, loadImage, image_url } = this.props;
+        const { isAuthenticated, logout, saveAnnotations, image_url } = this.props;
 
         return (
             <div>

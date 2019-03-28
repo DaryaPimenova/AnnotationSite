@@ -71,7 +71,6 @@ export const login = (username, password) => {
 export const register = (username, email, password) => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};
-        console.log('BEFORE SEND TO Server', username, email, password)
         let body = JSON.stringify({username, email, password});
 
         return fetch("/api/auth/register/", {headers, body, method: "POST"})
@@ -88,14 +87,11 @@ export const register = (username, email, password) => {
             .then(res => {
                 if (res.status === 200) {
                     dispatch({type: C.REGISTRATION_SUCCESSFUL, data: res.data });
-                    console.log('------------111---------', res.data)
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
-                    console.log('-----------222---------', res.data)
                     dispatch({type: C.AUTHENTICATION_ERROR, data: res.data});
                     throw res.data;
                 } else {
-                    console.log('------------333---------', res.data)
                     dispatch({type: C.REGISTRATION_FAILED, data: res.data});
                     throw res.data;
                 }

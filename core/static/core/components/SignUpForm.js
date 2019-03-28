@@ -15,7 +15,6 @@ class SignUpForm extends Component {
 
     onRegister = (event) => {
         event.preventDefault();
-        console.log('ON REGISTER:', this.state.username, this.state.email, this.state.password)
         this.props.register(this.state.username, this.state.email, this.state.password);
     }
 
@@ -31,7 +30,7 @@ class SignUpForm extends Component {
             <div>
                 <Menu isAuthenticated={isAuthenticated} logout={logout} />
                 <div className="signup">
-                    <h1>Регистрация? Почему она не работает???????</h1>
+                    <h1>Регистрация</h1>
                     <form method="post">
                         {this.props.errors.length > 0 && (
                             <ul>

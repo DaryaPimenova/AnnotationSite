@@ -31,7 +31,7 @@ class SignInForm extends Component {
             <div>
                 <Menu isAuthenticated={isAuthenticated} logout={logout} />
                 <div className="login">
-                    <h1>Вход - Выход. А тожет вход</h1>
+                    <h1>Вход</h1>
                     <form method="post" onSubmit={this.onLogin}>
                         {this.props.errors.length > 0 && (
                             <ul>
