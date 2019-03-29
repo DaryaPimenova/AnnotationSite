@@ -21,9 +21,8 @@ export default class Menu extends React.Component {
                 <div className="collapse navbar-collapse" id="navbarText">
                 {this.props.isAuthenticated ?
                     <ul className="navbar-nav ml-auto">
-                        <li className="nav-item nav-link">
-                                <a onClick={this.props.logout} >Выйти</a>
-
+                        <li className="nav-item nav-link logout-link">
+                            <a onClick={this.props.logout} >Выйти</a>
                         </li>
                     </ul>
                     :
