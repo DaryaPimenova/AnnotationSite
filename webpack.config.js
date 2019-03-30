@@ -66,10 +66,10 @@ console.log(colors.yellow('Run building'));
 
 module.exports = {
         cache: true,
-        context: path.join(path.resolve(__dirname), "core", "static", "core"),
+        context: path.join(path.resolve(__dirname), "core", "src"),
         entry: "main.js",
         output: {
-            path: path.join(path.resolve(__dirname), "core", "static", "core", "build"),
+            path: path.join(path.resolve(__dirname), "core", "static", "core"),
             filename: "app.build.js",
         },
         plugins: plugins,
@@ -104,7 +104,7 @@ module.exports = {
         },
         watch: watch,
         resolve: {
-            modules: ['node_modules', "./core/static/core"],
+            modules: ['node_modules', "./core/src"],
             extensions: [
                 '.jsx',
                 '.js',

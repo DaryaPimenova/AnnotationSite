@@ -143,9 +143,11 @@ class ImageAnnotation extends React.Component {
 
                                 <Col>
                                     <input 
+                                        className="form-control"
                                         type='text' 
                                         key={`${(id+1)*1}`}
                                         value={annotation.data.remark}
+                                        required="required"
                                         onChange={e => this.onChangeAnnotations(
                                             annotation,
                                             id,
@@ -156,9 +158,11 @@ class ImageAnnotation extends React.Component {
                                 </Col>
                                 <Col>
                                     <input 
+                                        className="form-control"
                                         type='text' 
                                         key={`${(id+1)*2}`}
                                         value={annotation.data.style}
+                                        required="required"
                                         onChange={e => this.onChangeAnnotations(
                                             annotation,
                                             id,
@@ -169,9 +173,11 @@ class ImageAnnotation extends React.Component {
                                 </Col>
                                 <Col>
                                     <input 
+                                    className="form-control"
                                         type='text' 
                                         value={annotation.data.sense}
                                         key={`${(id+1)*3}`}
+                                        required="required"
                                         onChange={e => this.onChangeAnnotations(
                                             annotation,
                                             id,
