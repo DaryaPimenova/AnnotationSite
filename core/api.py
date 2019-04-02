@@ -11,7 +11,7 @@ class ImageAPI(generics.RetrieveAPIView):
     serializer_class = ImageSerializer
 
     def get_object(self):
-        return self.request.user.get_random_non_annotated_image()
+        return self.request.user.get_random_image()
 
 
 class AnnotationSaveAPI(generics.GenericAPIView):
@@ -29,7 +29,7 @@ class AnnotationSaveAPI(generics.GenericAPIView):
                 serializer.save(image_id=image_id, user=request.user)
 
         return Response({
-            'image': ImageSerializer(request.user.get_random_non_annotated_image()).data
+            'image': ImageSerializer(request.user.get_random_image()).data
         })
 
     def __prepare_data(self, data, image_id):

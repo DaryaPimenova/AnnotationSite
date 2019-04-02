@@ -114,7 +114,7 @@ class ImageAnnotation extends React.Component {
             <div>
                 <Menu isAuthenticated={isAuthenticated} logout={logout} />
                 <Row>
-                    <Col>
+                    <Col md={5}>
                         <div className='image-annotation'>
                             <Annotation                    
                                 src={image_url}
@@ -132,7 +132,7 @@ class ImageAnnotation extends React.Component {
                             />
                         </div>
                     </Col>
-                    <Col>
+                    <Col md={7}>
                         <Form className='form-annotation' onSubmit={::this.onSaveAnnotations}>
                         {this.state.annotations.map((annotation, id) => (
                             <Row
@@ -141,7 +141,7 @@ class ImageAnnotation extends React.Component {
                                 onMouseOver={this.onMouseOver(annotation.data.id)}
                                 onMouseOut={this.onMouseOut(annotation.data.id)}>
 
-                                <Col>
+                                <Col className="form-column">
                                     <input 
                                         className="form-control"
                                         type='text' 
@@ -156,7 +156,7 @@ class ImageAnnotation extends React.Component {
                                         )}
                                     />
                                 </Col>
-                                <Col>
+                                <Col className="form-column">
                                     <input 
                                         className="form-control"
                                         type='text' 
@@ -171,7 +171,7 @@ class ImageAnnotation extends React.Component {
                                         )}
                                     />
                                 </Col>
-                                <Col>
+                                <Col className="form-column">
                                     <input 
                                     className="form-control"
                                         type='text' 
