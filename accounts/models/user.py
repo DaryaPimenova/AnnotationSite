@@ -11,13 +11,16 @@ class User(AbstractUser):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
-    def get_random_non_annotated_image(self, image_id=None):
+    def get_random_image(self, image_id=None, annotation_user=None):
         """
-        Выбираем случайную картинку, которую пользователь до этого ещё не размечал
+        Выбираем случайную картинку
         """
         from core.models import Image
+        
+        images = Image.objects.all()
+        if annotation_user is not None:
+            images = images.exclude(annotation__user=annotation_user)
 
-        images = Image.objects.exclude(annotation__user=self)
         if image_id is not None:
             images = images.exclude(pk=image_id)
 
