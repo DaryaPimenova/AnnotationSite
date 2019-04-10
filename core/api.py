@@ -1,5 +1,6 @@
 from rest_framework import permissions, generics
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.db import transaction
 from core.models import Image
 
@@ -12,6 +13,24 @@ class ImageAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user.get_random_image()
+
+
+
+class ImageDeleteAPI(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = ImageSerializer
+
+    def post(self, request, *args, **kwargs):
+        # TODO: нужно переделать на стандарт
+        # файл с картинкой тоже нужно удалить
+
+        image_id = request.data['image_id']
+        image = Image.objects.get(pk=image_id)
+        image.delete()
+
+        return Response({
+            'image': ImageSerializer(request.user.get_random_image()).data
+        })
 
 
 class AnnotationSaveAPI(generics.GenericAPIView):

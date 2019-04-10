@@ -40,6 +40,45 @@ export const saveAnnotations = (annotations, image_id) => {
     }
 }
 
+export const deleteImage = (image_id) => {
+    return (dispatch, getState) => {
+        let headers = {"Content-Type": "application/json"};
+        let body = JSON.stringify({image_id});
+
+        let {token} = getState().auth;
+
+        if (token) {
+            headers["Authorization"] = `Token ${token}`;
+        }
+
+        dispatch({type: C.DELETE_IMAGE_REQUEST});
+
+        return fetch("/api/annotations/delete_image/", {headers, body, method: "POST"})
+            .then(res => {
+                if (res.status < 500) {
+                    return res.json().then(data => {
+                        return {status: res.status, data};
+                    })
+                } else {
+                    console.log("Server Error!");
+                    throw res;
+                }
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    dispatch({type: C.DELETE_IMAGE_SUCCESSFUL, data: res.data.image });
+                    return res.data;
+                } else if (res.status === 403 || res.status === 401) {
+                    dispatch({type: C.DELETE_IMAGE_FAILED, data: res.data});
+                    throw res.data;
+                } else {
+                    dispatch({type: C.DELETE_IMAGE_FAILED, data: res.data});
+                    throw res.data;
+                }
+            })
+    }
+}
+
 export const loadImage = () => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};

@@ -68,6 +68,12 @@ class ImageAnnotation extends React.Component {
         this.setState({annotations})
     }
 
+    onDeleteImage = () => {
+        let is_delete = confirm('Вы уверены, что хотите удалить эту картинку?');
+        if (is_delete) {
+            this.props.deleteImage(this.props.image_id)
+        }
+    }
 
     onMouseOver = (id) => e => {
         this.setState({
@@ -203,6 +209,14 @@ class ImageAnnotation extends React.Component {
                                 Пропустить...
                             </Button>
                         }
+                        {this.props.user.is_superuser
+                            ?
+                            <Button type='button' id="delete-image" className='btn btn-primary btn-sm' onClick={this.onDeleteImage}>
+                                Удалить
+                            </Button>
+                            :
+                            null
+                        }
                         </Form>
                     </Col>
                 </Row>
@@ -214,6 +228,7 @@ class ImageAnnotation extends React.Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.user,
+        user: state.auth.user,
         image_url: state.annotation.image_url,
         image_id: state.annotation.image_id,
     }
@@ -224,6 +239,7 @@ const mapDispatchToProps = dispatch => {
         logout: () => dispatch(auth.logout()),
         saveAnnotations: (annotations, image_id) => dispatch(annotation.saveAnnotations(annotations, image_id)),
         loadImage: () => dispatch(annotation.loadImage()),
+        deleteImage: (image_id) => dispatch(annotation.deleteImage(image_id))
     };
 }
 

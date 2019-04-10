@@ -55,6 +55,27 @@ export default function annotation(state=initialState, action) {
                 errors: action.data, 
             }
 
+        case C.DELETE_IMAGE_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case C.DELETE_IMAGE_SUCCESSFUL:
+            return {
+                ...state,
+                ...action.data,
+                isLoading: false,
+                errors: null
+            }
+
+        case C.DELETE_IMAGE_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                errors: action.data
+            }
+
         default:
             return state;
     }

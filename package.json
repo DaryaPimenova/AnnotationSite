@@ -34,6 +34,7 @@
     "redux-form": "6.5.0",
     "redux-thunk": "2.1.0",
     "spin.js": "2.3.2",
+    "sweetalert-react": "^0.4.11",
     "sweetalert2": "^7.0.0"
   },
   "devDependencies": {
