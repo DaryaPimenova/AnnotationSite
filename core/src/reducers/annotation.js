@@ -5,6 +5,7 @@ const initialState = {
     isLoading: true,
     image_url: '',
     image_id: -1,
+    classes: [],
     errors: {},
 };
 
