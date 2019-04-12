@@ -9,6 +9,7 @@ import Editor from './Editor';
 import {connect} from 'react-redux';
 import {annotation, auth} from "../actions";
 import { Form, Row, Col, Button } from 'react-bootstrap';
+import Select from 'react-select';
 
 
 class ImageAnnotation extends React.Component {
@@ -68,6 +69,12 @@ class ImageAnnotation extends React.Component {
         this.setState({annotations})
     }
 
+    onDeleteImage = () => {
+        let is_delete = confirm('Вы уверены, что хотите удалить эту картинку?');
+        if (is_delete) {
+            this.props.deleteImage(this.props.image_id)
+        }
+    }
 
     onMouseOver = (id) => e => {
         this.setState({
@@ -103,16 +110,38 @@ class ImageAnnotation extends React.Component {
         }
     }
 
+    getClasses = () => {
+        let classes = [];
+        this.props.classes.map((c, i) => {
+            classes[i] = {
+                value: c.pk,
+                label: c.title
+            }
+        });
+
+        return classes;
+    }
+
+    renderEditor = (props) => {
+        return <Editor {...props} classes={this.getClasses()} />
+    }
+
     componentWillMount() {
         this.props.loadImage();
     }
 
     render() {
-        const { isAuthenticated, logout, saveAnnotations, image_url } = this.props;
+        const { isAuthenticated, logout, saveAnnotations, image_url, classes} = this.props;
 
         return (
             <div>
                 <Menu isAuthenticated={isAuthenticated} logout={logout} />
+                {this.props.user.is_superuser
+                    ?
+                    <a href="/api/annotations/download/">Выгрузить отчёт</a>
+                    :
+                    null
+                }
                 <Row>
                     <Col md={5}>
                         <div className='image-annotation'>
@@ -126,7 +155,7 @@ class ImageAnnotation extends React.Component {
                                 activeAnnotationComparator={this.activeAnnotationComparator}
                                 activeAnnotations={this.state.activeAnnotations}
                                 renderSelector={Selector}
-                                renderEditor={Editor}
+                                renderEditor={this.renderEditor}
                                 renderHighlight={Highlight}
                                 renderContent={Content}
                             />
@@ -139,35 +168,17 @@ class ImageAnnotation extends React.Component {
                                 className='form-row' 
                                 key={`${id}`}               
                                 onMouseOver={this.onMouseOver(annotation.data.id)}
-                                onMouseOut={this.onMouseOut(annotation.data.id)}>
-
-                                <Col className="form-column">
-                                    <input 
-                                        className="form-control"
-                                        type='text' 
-                                        key={`${(id+1)*1}`}
-                                        value={annotation.data.remark}
-                                        required="required"
-                                        onChange={e => this.onChangeAnnotations(
+                                onMouseOut={this.onMouseOut(annotation.data.id)}
+                            >
+                                <Col className='form-column'>
+                                    <Select
+                                        value={annotation.data.image_class}
+                                        options={this.getClasses()}
+                                        onChange={opt => this.onChangeAnnotations(
                                             annotation,
                                             id,
-                                            {remark: e.target.value},
-                                            `${id}remark`
-                                        )}
-                                    />
-                                </Col>
-                                <Col className="form-column">
-                                    <input 
-                                        className="form-control"
-                                        type='text' 
-                                        key={`${(id+1)*2}`}
-                                        value={annotation.data.style}
-                                        required="required"
-                                        onChange={e => this.onChangeAnnotations(
-                                            annotation,
-                                            id,
-                                            {style: e.target.value},
-                                            `${id}style`
+                                            {image_class: opt},
+                                            `${id}image_class`
                                         )}
                                     />
                                 </Col>
@@ -203,6 +214,14 @@ class ImageAnnotation extends React.Component {
                                 Пропустить...
                             </Button>
                         }
+                        {this.props.user.is_superuser
+                            ?
+                            <Button type='button' id="delete-image" className='btn btn-primary btn-sm' onClick={this.onDeleteImage}>
+                                Удалить
+                            </Button>
+                            :
+                            null
+                        }
                         </Form>
                     </Col>
                 </Row>
@@ -214,8 +233,10 @@ class ImageAnnotation extends React.Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.user,
+        user: state.auth.user,
         image_url: state.annotation.image_url,
         image_id: state.annotation.image_id,
+        classes: state.annotation.classes
     }
 }
 
@@ -224,6 +245,7 @@ const mapDispatchToProps = dispatch => {
         logout: () => dispatch(auth.logout()),
         saveAnnotations: (annotations, image_id) => dispatch(annotation.saveAnnotations(annotations, image_id)),
         loadImage: () => dispatch(annotation.loadImage()),
+        deleteImage: (image_id) => dispatch(annotation.deleteImage(image_id))
     };
 }
 
