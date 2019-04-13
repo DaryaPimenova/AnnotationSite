@@ -62,7 +62,7 @@ class Command(BaseCommand):
                 image_classes = image_data['image_classes']
                 if not image_classes:
                     raise Exception('Для картинки {} не указаны классы!'.format(path_to_image))
-                Image.create_from_path(path_to_image, style, image_classes)
+                Image.create_from_path(path_to_image, image_classes, style)
             else:
                 raise Exception('Для картинки {} не указаны данные в файле!')
 
