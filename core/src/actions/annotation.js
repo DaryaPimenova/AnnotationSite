@@ -115,3 +115,40 @@ export const loadImage = () => {
             })
     }
 }
+
+export const loadImageForUpdate = () => {
+    return (dispatch, getState) => {
+        let headers = {"Content-Type": "application/json"};
+        let {token} = getState().auth;
+
+        if (token) {
+            headers["Authorization"] = `Token ${token}`;
+        }
+
+        dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_REQUEST});
+
+        return fetch("/api/annotations/load_image_for_update/", {headers, })
+            .then(res => {
+                if (res.status < 500) {
+                    return res.json().then(data => {
+                        return {status: res.status, data};
+                    })
+                } else {
+                    console.log("Server Error!");
+                    throw res;
+                }
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_SUCCESSFUL, data: res.data });
+                    return res.data;
+                } else if (res.status === 403 || res.status === 401) {
+                    dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_FAILED, data: res.data});
+                    throw res.data;
+                } else {
+                    dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_FAILED, data: res.data});
+                    throw res.data;
+                }
+            })
+    }
+}

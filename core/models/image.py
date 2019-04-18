@@ -23,19 +23,13 @@ class Image(models.Model):
         return '{} [{} X {}]'.format(self.image_file.path.split('/')[-1], self.height, self.width)
 
     @classmethod
-    def create_from_path(cls, path_to_file, image_classes, style=None):
+    def create_from_path(cls, path_to_file):
         f = open(path_to_file, 'rb')
         tmp_img = PIL_IMAGE.open(path_to_file)
         django_file = File(f)
-        if style:
-            style, _ = Style.objects.get_or_create(title=style)
+
         new_image = cls(
-            style=style,
             height=tmp_img.height, 
             width=tmp_img.width
         )
         new_image.image_file.save(path_to_file.split('/')[-1], django_file, save=True)
-
-        for image_class in image_classes:
-            img_class, _ = ImageClass.objects.get_or_create(title=image_class.strip().lower())
-            ImageToClass.objects.create(image_class=img_class, image=new_image)

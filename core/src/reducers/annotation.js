@@ -5,6 +5,8 @@ const initialState = {
     isLoading: true,
     image_url: '',
     image_id: -1,
+    image_for_update_url: '',
+    image_for_update_id: -1,
     classes: [],
     errors: {},
 };
@@ -54,6 +56,28 @@ export default function annotation(state=initialState, action) {
                 ...state,
                 isLoading: false,
                 errors: action.data, 
+            }
+
+
+        case C.LOAD_IMAGE_FOR_UPDATE_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            }
+        
+        case C.LOAD_IMAGE_FOR_UPDATE_SUCCESSFUL:
+            return {
+                ...state,
+                ...action.data,
+                isLoading: false,
+                errors: null
+            }
+
+        case C.LOAD_IMAGE_FOR_UPDATE_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                errors: action.data
             }
 
         case C.DELETE_IMAGE_REQUEST:

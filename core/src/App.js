@@ -12,6 +12,7 @@ import {
     SignInForm,
     SignUpForm,
     ImageAnnotation,
+    ImageUpdater,
     Menu,
     NotFound
 } from "./components"
@@ -44,6 +45,7 @@ class RootContainerComponent extends Component {
             <BrowserRouter>
                 <Switch>
                     <PrivateRoute exact path="/" component={ImageAnnotation} />
+                    <PrivateRoute exact path="/updater" component={ImageUpdater} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />
                     <Route component={NotFound} />

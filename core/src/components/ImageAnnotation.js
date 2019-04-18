@@ -184,7 +184,7 @@ class ImageAnnotation extends React.Component {
                                 </Col>
                                 <Col className="form-column">
                                     <input 
-                                    className="form-control"
+                                        className="form-control"
                                         type='text' 
                                         value={annotation.data.sense}
                                         key={`${(id+1)*3}`}
