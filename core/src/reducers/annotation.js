@@ -37,6 +37,27 @@ export default function annotation(state=initialState, action) {
                 errors: action.data, 
             }
 
+        case C.SAVE_IMAGE_DATA_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case C.SAVE_IMAGE_DATA_SUCCESSFUL:
+            return {
+                ...state,
+                ...action.data,
+                isLoading: false,
+                errors: null
+            }
+
+        case C.SAVE_IMAGE_DATA_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                errors: action.data,
+            }
+
         case C.LOAD_IMAGE_REQUEST: 
             return {
                 ...state,

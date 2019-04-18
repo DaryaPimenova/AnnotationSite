@@ -5,11 +5,11 @@ from django.db import transaction
 from django.conf import settings
 import os
 import csv
-from core.models import Image, Annotation
+from core.models import Image, Annotation, Style, ImageClass, ImageToClass
 from io import BytesIO, StringIO
 import zipfile
 
-from .serializers import ImageSerializer, AnnotationSerializer
+from .serializers import ImageSerializer, ImageClassSerializer, StyleSerializer, AnnotationSerializer
 
 
 class ImageAPI(generics.RetrieveAPIView):
@@ -18,6 +18,14 @@ class ImageAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user.get_random_image()
+
+
+class ImageForUpdateAPI(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = ImageSerializer
+
+    def get_object(self):
+        return self.request.user.get_image_for_update()
 
 
 class ImageDeleteAPI(generics.GenericAPIView):
@@ -75,6 +83,32 @@ class DownloadAPI(views.APIView):
         )
 
         return response
+
+
+class ImageDateAPI(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = ImageSerializer
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        image = Image.objects.get(pk=data['image_for_update_id'])
+
+        classes = [c.strip().lower() for c in data['classes'].split(',')]
+
+        if all(classes):
+            for image_class in classes:
+                img_class, _ = ImageClass.objects.get_or_create(title=image_class)
+                ImageToClass.objects.create(image_class=img_class, image=image)
+
+        style_str = data['style'].strip().lower()
+        if style_str:
+            style, _ = Style.objects.get_or_create(title=data['style'].strip().lower())
+            image.style = style
+            image.save()
+
+        return Response({
+            'image': ImageSerializer(request.user.get_image_for_update()).data
+        })
 
 
 class AnnotationSaveAPI(generics.GenericAPIView):

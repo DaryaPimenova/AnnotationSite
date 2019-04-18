@@ -8,7 +8,6 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--image-folder', type=str)
 
-    @transaction.atomic
     def handle(self, *args, **options):
         print('\nSTART\n\n')
 
@@ -17,7 +16,7 @@ class Command(BaseCommand):
         if not image_folder:
             print(
                 'Укажите путь к папке с загружаемыми изображениями!\n' 
-                '(например: --image-folder="/home/user/image_folder")'
+                '(например: python manage.py upload_images --image-folder="/home/user/image_folder")'
             )
             return
 
