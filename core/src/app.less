@@ -133,7 +133,7 @@ body {
 .login h1,
 .signup h1 { 
     font-size: 18px;
-    color: #fff; 
+    color: #000; 
     text-shadow: 0 0 10px rgba(0,0,0,0.3); 
     letter-spacing:1px; 
     text-align:center; 
@@ -171,7 +171,11 @@ input:focus {
 }
 
 .form-annotation {
-    margin-top: 20px;
+    margin-top: 50px;
+}
+
+.updater-form {
+    margin-top: 40px;
 }
 
 .updater-form .form-control {
@@ -185,7 +189,7 @@ input:focus {
 }
 
 .logout-link {
-    cursor: pointer;    
+    cursor: pointer;
 }
 
 .form-row div {
@@ -197,23 +201,37 @@ input:focus {
 }
 
 .editor {
-    width: 320px;
+    width: 350px;
     border: 1px solid black;
     background-color: #4a77d4;
-    padding: 5px;
-    border-radius: 3;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
     position: absolute;
 }
 
 .form-row .form-column {
-    width: 28%;
+    width: 35%;
 }
 
 #delete-image {
-    margin-left: 20px;    
+    margin-left: 20px;
 }
 
 #image-class {
-    width: 65%;
-    margin-left: 5%;
+    width: 67%;
+    margin-left: 4%;
+    margin-bottom: 10px;
+}
+
+.image-for-update {
+    width: 100%;
+    height: 80vh;
+    margin-top: 20px;
+    overflow: auto;
+}
+
+.image-for-update img {
+    display: block;
+    margin: 0 auto;
 }

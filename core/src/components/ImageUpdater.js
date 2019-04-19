@@ -36,19 +36,26 @@ class ImageUpdater extends React.Component {
         }
     }
 
+    onDeleteImage = () => {
+        let is_delete = confirm('Вы уверены, что хотите удалить эту картинку?');
+        if (is_delete) {
+            this.props.deleteImage(this.props.image_for_update_id)
+        }
+    }
+
     render() {
         const { isAuthenticated, logout, image_for_update_url } = this.props;
 
         return (
             <div>
                 <Menu isAuthenticated={isAuthenticated} logout={logout} />
-                <Row>
-                    <Col md={6}>
+                <Row className="justify-content-md-center">
+                    <Col md={5}>
                         <div className='image-for-update'>
                             <img style={{witdh: '90%'}} src={image_for_update_url} />
                         </div>
                     </Col>
-                    <Col md={6}>
+                    <Col md={4}>
                         <form className='updater-form' onSubmit={::this.onSaveImageData}>
                         <div className="form-group row">
                             <label htmlFor='updater-style' className="col-sm-3 col-form-label">
@@ -77,12 +84,20 @@ class ImageUpdater extends React.Component {
                                 onChange={e => this.setState({classes: e.target.value})}
                             />
                         </div>
-                            <Button type='submit' className='btn btn-primary btn-sm'>
+                            <Button type='submit' className='btn btn-primary btn-sm' style={{marginRight: '10px'}}>
                                 Сохранить
                             </Button>
                             <Button type='button' className='btn btn-primary btn-sm' onClick={this.onLoadNextImage}>
                                 Пропустить...
                             </Button>
+                            {this.props.user.is_superuser
+                                ?
+                                <Button type='button' id="delete-image" className='btn btn-primary btn-sm' onClick={this.onDeleteImage}>
+                                    Удалить
+                                </Button>
+                                :
+                                null
+                            }
                         </form>
                     </Col>
                 </Row>
@@ -94,6 +109,7 @@ class ImageUpdater extends React.Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.user,
+        user: state.auth.user,
         image_for_update_url: state.annotation.image_for_update_url,
         image_for_update_id: state.annotation.image_for_update_id,
     }
@@ -103,7 +119,8 @@ const mapDispatchToProps = dispatch => {
     return {
         logout: () => dispatch(auth.logout()),
         loadImageForUpdate: () => dispatch(annotation.loadImageForUpdate()),
-        saveImageData: (image_for_update_id, style, classes) => dispatch(annotation.saveImageData(image_for_update_id, style, classes))
+        saveImageData: (image_for_update_id, style, classes) => dispatch(annotation.saveImageData(image_for_update_id, style, classes)),
+        deleteImage: (image_id) => dispatch(annotation.deleteImage(image_id))
     };
 }
 

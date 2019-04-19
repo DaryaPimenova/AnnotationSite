@@ -142,7 +142,7 @@ class ImageAnnotation extends React.Component {
                     :
                     null
                 }
-                <Row>
+                <Row className="justify-content-md-center">
                     <Col md={5}>
                         <div className='image-annotation'>
                             <Annotation                    
@@ -161,8 +161,9 @@ class ImageAnnotation extends React.Component {
                             />
                         </div>
                     </Col>
-                    <Col md={7}>
+                    <Col md={4}>
                         <Form className='form-annotation' onSubmit={::this.onSaveAnnotations}>
+                        <h2>Annotations</h2>
                         {this.state.annotations.map((annotation, id) => (
                             <Row
                                 className='form-row' 
@@ -204,6 +205,7 @@ class ImageAnnotation extends React.Component {
                                 </Col>
                             </Row>
                         ))}
+                        <div style={{marginTop: '20px'}}>
                         {this.state.annotations.length > 0 
                             ? 
                             <Button type='submit' className='btn btn-primary btn-sm'>
@@ -222,6 +224,7 @@ class ImageAnnotation extends React.Component {
                             :
                             null
                         }
+                        </div>
                         </Form>
                     </Col>
                 </Row>
