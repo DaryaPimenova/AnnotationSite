@@ -132,7 +132,7 @@ export const deleteImage = (image_id, is_updater=false) => {
     }
 }
 
-export const loadImage = () => {
+export const loadImage = (is_updater=false) => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};
         let {token} = getState().auth;
@@ -143,7 +143,7 @@ export const loadImage = () => {
 
         dispatch({type: C.LOAD_IMAGE_REQUEST});
 
-        return fetch("/api/annotations/load_image/", {headers, })
+        return fetch(`/api/annotations/load_image/?is_updater=${is_updater}`, {headers, })
             .then(res => {
                 if (res.status < 500) {
                     return res.json().then(data => {
@@ -156,55 +156,22 @@ export const loadImage = () => {
             })
             .then(res => {
                 if (res.status === 200) {
-                    dispatch({type: C.LOAD_IMAGE_SUCCESSFUL, data: res.data });
+                    let data = {};
+                    if (is_updater) {
+                        data = {
+                            image_for_update_url: res.data.image.image_url,
+                            image_for_update_id: res.data.image.image_id,
+                        }
+                    } else {
+                        data = res.data.image;
+                    }
+                    dispatch({type: C.LOAD_IMAGE_SUCCESSFUL, data: data });
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
                     dispatch({type: C.LOAD_IMAGE_FAILED, data: res.data});
                     throw res.data;
                 } else {
                     dispatch({type: C.LOAD_IMAGE_FAILED, data: res.data});
-                    throw res.data;
-                }
-            })
-    }
-}
-
-export const loadImageForUpdate = () => {
-    return (dispatch, getState) => {
-        let headers = {"Content-Type": "application/json"};
-        let {token} = getState().auth;
-
-        if (token) {
-            headers["Authorization"] = `Token ${token}`;
-        }
-
-        dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_REQUEST});
-
-        return fetch("/api/annotations/load_image_for_update/", {headers, })
-            .then(res => {
-                if (res.status < 500) {
-                    return res.json().then(data => {
-                        return {status: res.status, data};
-                    })
-                } else {
-                    console.log("Server Error!");
-                    throw res;
-                }
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    let data = {
-                        image_for_update_url: res.data.image_url,
-                        image_for_update_id: res.data.image_id,
-                    }
-
-                    dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_SUCCESSFUL, data: data });
-                    return data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_FAILED, data: res.data});
-                    throw res.data;
-                } else {
-                    dispatch({type: C.LOAD_IMAGE_FOR_UPDATE_FAILED, data: res.data});
                     throw res.data;
                 }
             })

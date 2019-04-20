@@ -14,13 +14,13 @@ class ImageUpdater extends React.Component {
     }
 
     componentWillMount() {
-        this.props.loadImageForUpdate();
+        this.props.loadImage(true);
     }
 
     onLoadNextImage = (event) => {
         event.preventDefault();
         this.setState({style: '', classes: ''});
-        this.props.loadImageForUpdate();
+        this.props.loadImage(true);
     }
 
     onSaveImageData = (event) => {
@@ -118,7 +118,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         logout: () => dispatch(auth.logout()),
-        loadImageForUpdate: () => dispatch(annotation.loadImageForUpdate()),
+        loadImage: (is_updater) => dispatch(annotation.loadImage(is_updater)),
         saveImageData: (image_for_update_id, style, classes) => dispatch(annotation.saveImageData(image_for_update_id, style, classes)),
         deleteImage: (image_id, is_updater) => dispatch(annotation.deleteImage(image_id, is_updater))
     };

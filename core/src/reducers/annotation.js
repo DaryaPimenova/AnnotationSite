@@ -79,28 +79,6 @@ export default function annotation(state=initialState, action) {
                 errors: action.data, 
             }
 
-
-        case C.LOAD_IMAGE_FOR_UPDATE_REQUEST:
-            return {
-                ...state,
-                isLoading: true
-            }
-        
-        case C.LOAD_IMAGE_FOR_UPDATE_SUCCESSFUL:
-            return {
-                ...state,
-                ...action.data,
-                isLoading: false,
-                errors: null
-            }
-
-        case C.LOAD_IMAGE_FOR_UPDATE_FAILED:
-            return {
-                ...state,
-                isLoading: false,
-                errors: action.data
-            }
-
         case C.DELETE_IMAGE_REQUEST:
             return {
                 ...state,

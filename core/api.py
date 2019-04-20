@@ -16,16 +16,14 @@ class ImageAPI(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = ImageSerializer
 
-    def get_object(self):
-        return self.request.user.get_random_image()
+    def get(self, request, *args, **kwargs):
+        is_updater = request.GET.get('is_updater') == 'true'
+        image_getter = request.user.get_image_for_update if is_updater else request.user.get_random_image
+        image = image_getter()
 
-
-class ImageForUpdateAPI(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = ImageSerializer
-
-    def get_object(self):
-        return self.request.user.get_image_for_update()
+        return Response({
+            'image': ImageSerializer(image).data
+        })
 
 
 class ImageDeleteAPI(generics.GenericAPIView):
