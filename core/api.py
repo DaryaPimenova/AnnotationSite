@@ -34,11 +34,15 @@ class ImageDeleteAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         image_id = request.data['image_id']
+        is_updater = request.data.get('is_updater')
+
         image = Image.objects.get(pk=image_id)
         image.delete()
 
+        image_getter = request.user.get_image_for_update if is_updater else request.user.get_random_image
+
         return Response({
-            'image': ImageSerializer(request.user.get_random_image()).data
+            'image': ImageSerializer(image_getter()).data
         })
 
 

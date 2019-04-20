@@ -84,10 +84,10 @@ export const saveImageData = (image_for_update_id, style, classes) => {
     }
 }
 
-export const deleteImage = (image_id) => {
+export const deleteImage = (image_id, is_updater=false) => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};
-        let body = JSON.stringify({image_id});
+        let body = JSON.stringify({image_id, is_updater});
 
         let {token} = getState().auth;
 
@@ -110,7 +110,16 @@ export const deleteImage = (image_id) => {
             })
             .then(res => {
                 if (res.status === 200) {
-                    dispatch({type: C.DELETE_IMAGE_SUCCESSFUL, data: res.data.image });
+                    let data = {};
+                    if (is_updater) {
+                        data = {
+                            image_for_update_url: res.data.image.image_url,
+                            image_for_update_id: res.data.image.image_id,
+                        }
+                    } else {
+                        data = res.data.image;
+                    }
+                    dispatch({type: C.DELETE_IMAGE_SUCCESSFUL, data: data });
                     return res.data;
                 } else if (res.status === 403 || res.status === 401) {
                     dispatch({type: C.DELETE_IMAGE_FAILED, data: res.data});

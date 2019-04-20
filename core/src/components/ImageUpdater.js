@@ -39,7 +39,7 @@ class ImageUpdater extends React.Component {
     onDeleteImage = () => {
         let is_delete = confirm('Вы уверены, что хотите удалить эту картинку?');
         if (is_delete) {
-            this.props.deleteImage(this.props.image_for_update_id)
+            this.props.deleteImage(this.props.image_for_update_id, true)
         }
     }
 
@@ -120,7 +120,7 @@ const mapDispatchToProps = dispatch => {
         logout: () => dispatch(auth.logout()),
         loadImageForUpdate: () => dispatch(annotation.loadImageForUpdate()),
         saveImageData: (image_for_update_id, style, classes) => dispatch(annotation.saveImageData(image_for_update_id, style, classes)),
-        deleteImage: (image_id) => dispatch(annotation.deleteImage(image_id))
+        deleteImage: (image_id, is_updater) => dispatch(annotation.deleteImage(image_id, is_updater))
     };
 }
 
