@@ -25,11 +25,9 @@ class SignInForm extends Component {
             return <Redirect to="/" />
         }
 
-        const { isAuthenticated, logout } = this.props;
-
         return (
             <div>
-                <Menu isAuthenticated={isAuthenticated} logout={logout} />
+                <Menu />
                 <div className="login">
                     <h1>Вход</h1>
                     <form method="post" onSubmit={this.onLogin}>
@@ -79,10 +77,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        login: (username, password) => {
-            return dispatch(auth.login(username, password));
-        },
-        logout: () => dispatch(auth.logout()),
+        login: (username, password) => { return dispatch(auth.login(username, password)); },
     };
 }
 

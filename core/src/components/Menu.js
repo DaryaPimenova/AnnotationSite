@@ -1,10 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {auth} from "../actions";
 
 
-export default class Menu extends React.Component {
+class Menu extends React.Component {
 
     render() {
+        const { isAuthenticated, isSuperUser, logout } = this.props;
+
         return (
         <div>
             <nav className="navbar navbar-dark bg-dark navbar-expand-lg navbar-light">
@@ -18,8 +22,10 @@ export default class Menu extends React.Component {
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
+
                 <div className="collapse navbar-collapse" id="navbarText">
-                {this.props.isAuthenticated ?
+                {isAuthenticated 
+                    ?
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
                             <NavLink to="/" activeClassName="nav-link" className="nav-link">
@@ -31,8 +37,18 @@ export default class Menu extends React.Component {
                                 Updater
                             </NavLink>
                         </li>
+                        {isSuperUser
+                            ?
+                            <li className="nav-item">
+                                <NavLink to="/statistics" activeClassName="nav-link" className="nav-link">
+                                    Статистика
+                                </NavLink>
+                            </li>
+                            :
+                            null
+                        }
                         <li className="nav-item nav-link logout-link">
-                            <a onClick={this.props.logout} >Выйти</a>
+                            <a onClick={logout} >Выйти</a>
                         </li>
                     </ul>
                     :
@@ -55,3 +71,19 @@ export default class Menu extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    const { user } = state.auth;
+    return {
+        isAuthenticated: user,
+        isSuperUser: user && user.is_superuser
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(auth.logout())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

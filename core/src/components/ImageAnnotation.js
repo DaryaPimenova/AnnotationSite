@@ -7,7 +7,7 @@ import Highlight from './Highlight';
 import Content from './Content';
 import Editor from './Editor';
 import {connect} from 'react-redux';
-import {annotation, auth} from "../actions";
+import {annotation} from "../actions";
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import Select from 'react-select';
 
@@ -131,11 +131,11 @@ class ImageAnnotation extends React.Component {
     }
 
     render() {
-        const { isAuthenticated, logout, saveAnnotations, image_url, classes} = this.props;
+        const { saveAnnotations, image_url, classes} = this.props;
 
         return (
             <div>
-                <Menu isAuthenticated={isAuthenticated} logout={logout} />
+                <Menu />
                 {this.props.user.is_superuser
                     ?
                     <a href="/api/annotations/download/">Выгрузить отчёт</a>
@@ -235,7 +235,6 @@ class ImageAnnotation extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.auth.user,
         user: state.auth.user,
         image_url: state.annotation.image_url,
         image_id: state.annotation.image_id,
@@ -245,7 +244,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(auth.logout()),
         saveAnnotations: (annotations, image_id) => dispatch(annotation.saveAnnotations(annotations, image_id)),
         loadImage: () => dispatch(annotation.loadImage()),
         deleteImage: (image_id) => dispatch(annotation.deleteImage(image_id))

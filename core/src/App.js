@@ -13,6 +13,7 @@ import {
     SignUpForm,
     ImageAnnotation,
     ImageUpdater,
+    Statistics,
     Menu,
     NotFound
 } from "./components"
@@ -40,12 +41,14 @@ class RootContainerComponent extends Component {
     }
 
     render() {
-        let {PrivateRoute} = this;
+        let { PrivateRoute } = this;
+
         return (
             <BrowserRouter>
                 <Switch>
                     <PrivateRoute exact path="/" component={ImageAnnotation} />
                     <PrivateRoute exact path="/updater" component={ImageUpdater} />
+                    <PrivateRoute exact path="/statistics" component={Statistics} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />
                     <Route component={NotFound} />

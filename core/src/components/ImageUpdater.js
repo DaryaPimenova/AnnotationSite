@@ -44,11 +44,11 @@ class ImageUpdater extends React.Component {
     }
 
     render() {
-        const { isAuthenticated, logout, image_for_update_url } = this.props;
+        const { image_for_update_url } = this.props;
 
         return (
             <div>
-                <Menu isAuthenticated={isAuthenticated} logout={logout} />
+                <Menu />
                 <Row className="justify-content-md-center">
                     <Col md={5}>
                         <div className='image-for-update'>
@@ -108,7 +108,6 @@ class ImageUpdater extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.auth.user,
         user: state.auth.user,
         image_for_update_url: state.annotation.image_for_update_url,
         image_for_update_id: state.annotation.image_for_update_id,
@@ -117,7 +116,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(auth.logout()),
         loadImage: (is_updater) => dispatch(annotation.loadImage(is_updater)),
         saveImageData: (image_for_update_id, style, classes) => dispatch(annotation.saveImageData(image_for_update_id, style, classes)),
         deleteImage: (image_id, is_updater) => dispatch(annotation.deleteImage(image_id, is_updater))

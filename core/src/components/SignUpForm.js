@@ -24,11 +24,9 @@ class SignUpForm extends Component {
             return <Redirect to="/" />
         }
 
-        const { isAuthenticated, logout } = this.props;
-
         return (
             <div>
-                <Menu isAuthenticated={isAuthenticated} logout={logout} />
+                <Menu />
                 <div className="signup">
                     <h1>Регистрация</h1>
                     <form method="post">
@@ -63,7 +61,13 @@ class SignUpForm extends Component {
                             required="required"
                             onChange={e => this.setState({email: e.target.value})}
                         />
-                        <button type="submit" onClick={this.onRegister} className="btn btn-primary btn-block btn-large">Зарегистрироваться</button>
+                        <button 
+                            type="submit" 
+                            onClick={this.onRegister} 
+                            className="btn btn-primary btn-block btn-large"
+                        >
+                            Зарегистрироваться
+                        </button>
                     </form>
                 </div>
             </div>
@@ -86,8 +90,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        register: (username, email, password) => dispatch(auth.register(username, email, password)),
-        logout: () => dispatch(auth.logout()),
+        register: (username, email, password) => dispatch(auth.register(username, email, password))
     };
 }
 

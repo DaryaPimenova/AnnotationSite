@@ -157,3 +157,18 @@ class AnnotationSaveAPI(generics.GenericAPIView):
             })
 
         return annotations
+
+
+class StatisticsAPI(views.APIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get(self, request, format=None):
+        
+        return Response({
+            'statistics_messages': [
+                'Всего картинок: {}'.format(Image.objects.count()),
+                'Поле "Стиль" заполнено у {}'.format(Image.objects.filter(style__isnull=False).count()),
+                'Проставлен хотя бы один класс у {}'.format(Image.objects.filter(classes__isnull=False).count()),
+                'Есть хотя бы одна аннотация у {}'.format(Image.objects.filter(annotation__isnull=False).count())
+            ]
+        })
