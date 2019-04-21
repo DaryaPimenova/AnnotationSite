@@ -21,7 +21,7 @@ class Statistics extends React.Component {
         return (
             <div>
                 <Menu />
-                <div>Здесь будет статистика разметки</div>
+                <div>Cтатистика разметки:</div>
                 <ul>
                 {
                     statistics_messages.map((msg, i) => {
