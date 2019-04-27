@@ -1,17 +1,10 @@
 from django.core.files import File
 from django.db import models
 from PIL import Image as PIL_IMAGE
-from core.models import ImageClass, ImageToClass, Style
 
 
 class Image(models.Model):
     image_file = models.ImageField('Изображение', upload_to='annotated_images')
-    style = models.ForeignKey('Style', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
-    classes = models.ManyToManyField('ImageClass',
-                                     through='ImageToClass',
-                                     verbose_name='Классы изображения',
-                                     related_name='images')
-
     height = models.IntegerField('Высота', default=0)
     width = models.IntegerField('Ширина', default=0)
 
