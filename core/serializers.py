@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from core.models import Image, ImageClass, Annotation, Style
+from core.models import Classification, Detection, Image, ImageClass, Style, Technique
+
+
+class TechniqueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Technique
+        fields = ('pk', 'title')
 
 
 class ImageClassSerializer(serializers.ModelSerializer):
@@ -17,12 +23,10 @@ class StyleSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     image_id = serializers.SerializerMethodField()
-    style = StyleSerializer()
-    classes = ImageClassSerializer(many=True)
 
     class Meta:
         model = Image
-        fields = ('image_id', 'image_url', 'style', 'classes')
+        fields = ('image_id', 'image_url', 'height', 'width')
 
     @staticmethod
     def get_image_url(obj):
@@ -33,8 +37,18 @@ class ImageSerializer(serializers.ModelSerializer):
         return obj.pk
 
 
-class AnnotationSerializer(serializers.ModelSerializer):
+class DetectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Detection
+        fields = ('x1', 'y1', 'x2', 'y2')
+
+
+class ClassificationSerializer(serializers.ModelSerializer):
+    image = ImageSerializer()
+    style = StyleSerializer()
+    image_class = ImageClassSerializer()
+    technique = TechniqueSerializer()
 
     class Meta:
-        model = Annotation
-        fields = ('sense', 'bottom', 'left', 'top', 'right')
+        model = Classification
+        fields = ('image', 'style', 'image_class', 'technique')

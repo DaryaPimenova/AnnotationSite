@@ -29,24 +29,6 @@ const Editor = (props) => {
                     }
                 />
             </div>
-            <div className="form-group row">
-                <label htmlFor="static-sense" className="col-sm-3 col-form-label">
-                    Смысл
-                </label>
-                <div className="col-sm-9">
-                    <input
-                        id="static-sense"
-                        className="form-control"
-                        onChange={e => props.onChange({
-                            ...props.annotation,
-                            data: {
-                                ...props.annotation.data,
-                                sense: e.target.value
-                            }
-                        })}
-                    />
-                </div>
-            </div>
             <button className='btn btn-primary btn-sm' onClick={props.onSubmit}>
                 Comment
             </button>

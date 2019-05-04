@@ -11,8 +11,8 @@ import annotationApp from "./reducers";
 import {
     SignInForm,
     SignUpForm,
-    ImageAnnotation,
-    ImageUpdater,
+    Detection,
+    Classification,
     Statistics,
     Menu,
     NotFound
@@ -46,8 +46,8 @@ class RootContainerComponent extends Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <PrivateRoute exact path="/" component={ImageAnnotation} />
-                    <PrivateRoute exact path="/updater" component={ImageUpdater} />
+                    <PrivateRoute exact path="/" component={Detection} />
+                    <PrivateRoute exact path="/updater" component={Classification} />
                     <PrivateRoute exact path="/statistics" component={Statistics} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />

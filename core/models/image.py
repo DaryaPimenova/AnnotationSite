@@ -1,6 +1,8 @@
 from django.core.files import File
 from django.db import models
 from PIL import Image as PIL_IMAGE
+from random import randint
+from django.db.models import Q
 
 
 class Image(models.Model):
@@ -26,3 +28,21 @@ class Image(models.Model):
             width=tmp_img.width
         )
         new_image.image_file.save(path_to_file.split('/')[-1], django_file, save=True)
+
+    @classmethod
+    def get_random_image(cls, exclude_image_ids=None):
+        """
+        Выбираем случайную картинку
+        """
+
+        img = None
+        filters = Q()
+        if exclude_image_ids is not None:
+            filters &= Q(pk__in=exclude_image_ids)
+
+        if cls.objects.exists():
+            count = cls.objects.count()
+            random_index = randint(0, count - 1)
+            img = cls.objects.all()[random_index]
+
+        return img
