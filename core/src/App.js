@@ -46,8 +46,8 @@ class RootContainerComponent extends Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <PrivateRoute exact path="/" component={Detection} />
-                    <PrivateRoute exact path="/updater" component={Classification} />
+                    <PrivateRoute exact path="/detection" component={Detection} />
+                    <PrivateRoute exact path="/classification" component={Classification} />
                     <PrivateRoute exact path="/statistics" component={Statistics} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />

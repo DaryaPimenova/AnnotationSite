@@ -28,13 +28,13 @@ class Menu extends React.Component {
                     ?
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <NavLink to="/" activeClassName="nav-link" className="nav-link">
-                                Главная
+                            <NavLink to="/detection" activeClassName="nav-link" className="nav-link">
+                                Детекция
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink to="/updater" activeClassName="nav-link" className="nav-link">
-                                Updater
+                            <NavLink to="/classification" activeClassName="nav-link" className="nav-link">
+                                Классификация
                             </NavLink>
                         </li>
                         {isSuperUser

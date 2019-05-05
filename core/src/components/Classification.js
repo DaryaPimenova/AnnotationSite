@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Menu from './Menu';
-import {getStyleOptions} from 'utils';
+import {getStyleOptions, getTechniqueOptions} from 'utils';
 import { Form, Row, Col, Radio, Button } from 'react-bootstrap';
 import {connect} from 'react-redux';
 import AsyncSelect from 'react-select/lib/Async';
@@ -12,7 +12,8 @@ class Classification extends React.Component {
 
     state = {
         style: null,
-        image_class_id: null,
+        technique: null,
+        image_class: null,
     }
 
     componentWillMount() {
@@ -21,26 +22,31 @@ class Classification extends React.Component {
 
     onLoadNextImage = (event) => {
         event.preventDefault();
-        this.setState({style: null, image_class_id: null});
+        this.setState({style: null, technique: null, image_class: null});
         this.props.loadImage(true);
     }
 
     onSaveClassification = (event) => {
         event.preventDefault();
-        let { style, image_class_id } = this.state;
+        let { style, technique, image_class } = this.state;
 
-        if (!image_class_id || !style) {
+        if (!image_class || !style) {
             alert('Заполните поля "Класс" и "Стиль"')
         } else {
-            this.setState({style: null, image_class_id: null});
-            this.props.saveClassification(this.props.image_for_classification_id, style.value, image_class_id);
+            this.setState({style: null, technique: null, image_class: null});
+            this.props.saveClassification(
+                this.props.image_for_classification, 
+                style.value, 
+                technique.value, 
+                image_class
+            );
         }
     }
 
     onDeleteImage = () => {
         let is_delete = confirm('Вы уверены, что хотите удалить эту картинку?');
         if (is_delete) {
-            this.props.deleteImage(this.props.image_for_classification_id, true)
+            this.props.deleteImage(this.props.image_for_classification, true)
         }
     }
 
@@ -52,37 +58,51 @@ class Classification extends React.Component {
                 <Menu />
                 <Row className="justify-content-md-center">
                     <Col md={5}>
-                        <div className='image-for-update'>
+                        <div className='image-for-classification'>
                             <img style={{witdh: '90%'}} src={image_for_classification_url} />
                         </div>
                     </Col>
                     <Col md={4}>
-                        <form className='updater-form' onSubmit={::this.onSaveClassification}>
+                        <form className='classification-form' onSubmit={::this.onSaveClassification}>
                         <div className="form-group row">
-                            <label htmlFor='updater-style' className="col-sm-3 col-form-label">
+                            <label htmlFor='classification-style' className="col-sm-3 col-form-label">
                                 Стиль
                             </label>
                             <AsyncSelect
-                                id='updater-style'
+                                id='classification-style'
+                                className="col-sm-9"
                                 cacheOptions
                                 loadOptions={getStyleOptions}
                                 defaultOptions
                                 onChange={(style) => this.setState({style})}
                             />
                         </div>
+                        <div className="form-group row">
+                            <label htmlFor='classification-technique' className="col-sm-3 col-form-label">
+                                Техника
+                            </label>
+                            <AsyncSelect
+                                id='classification-technique'
+                                className="col-sm-9"
+                                cacheOptions
+                                loadOptions={getTechniqueOptions}
+                                defaultOptions
+                                onChange={(technique) => this.setState({technique})}
+                            />
+                        </div>
                         <div className='form-group row'>
-                            <label htmlFor='updater-classes' className="col-sm-3 col-form-label">
+                            <label htmlFor='classification-classes' className="col-sm-3 col-form-label">
                                 Класс
                             </label>
-                            <div id='updater-classes'>
+                            <div id='classification-classes' className="col-sm-9">
                                 {classes.map((el, i) => {
                                     return (
                                         <Radio
                                             key={`default-key-${i}`}
                                             name='image_class'
                                             value={el.pk}
-                                            onClick={(e) => this.setState({image_class_id: e.target.value})}
-                                            checked={this.state.image_class_id == el.pk}
+                                            onClick={(e) => this.setState({image_class: e.target.value})}
+                                            checked={this.state.image_class == el.pk}
                                         >
                                         {el.title}
                                         </Radio>
@@ -122,14 +142,16 @@ const mapStateToProps = state => {
         user: state.auth.user,
         classes: state.annotation.classes,
         image_for_classification_url: state.annotation.image_for_classification_url,
-        image_for_classification_id: state.annotation.image_for_classification_id,
+        image_for_classification: state.annotation.image_for_classification,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         loadImage: (is_classification) => dispatch(annotation.loadImage(is_classification)),
-        saveClassification: (image_for_classification_id, style, image_class_id) => dispatch(annotation.saveClassification(image_for_classification_id, style, image_class_id)),
+        saveClassification: (image_for_classification, style, technique, image_class) => dispatch(
+            annotation.saveClassification(image_for_classification, style, technique, image_class)
+        ),
         deleteImage: (image_id, is_classification) => dispatch(annotation.deleteImage(image_id, is_classification))
     };
 }

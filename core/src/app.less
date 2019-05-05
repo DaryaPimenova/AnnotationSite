@@ -166,7 +166,7 @@ input:focus {
 .image-annotation {
     margin-left: 20px;
     margin-top: 20px;
-    height: 500px;
+    height: 80vh;
     width: 500px !important;
 }
 
@@ -174,12 +174,16 @@ input:focus {
     margin-top: 50px;
 }
 
-.updater-form {
+.classification-form {
     margin-top: 40px;
 }
 
-.updater-form .form-control {
+.classification-form .form-control {
     width: 80%;
+}
+
+.classification-form .row:nth-child(n+1) {
+    margin-top: 15px;
 }
 
 .remove-annotation {
@@ -224,14 +228,18 @@ input:focus {
     margin-bottom: 10px;
 }
 
-.image-for-update {
+.image-for-classification {
     width: 100%;
     height: 80vh;
     margin-top: 20px;
     overflow: auto;
 }
 
-.image-for-update img {
+.image-for-classification img {
     display: block;
     margin: 0 auto;
+}
+
+#classification-classes input {
+    width: 10%;
 }

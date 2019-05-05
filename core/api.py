@@ -6,11 +6,12 @@ from django.db.models import Q
 from django.conf import settings
 import os
 import csv
-from core.models import Image, Detection, Classification, ImageClass, Style
+from core.models import Image, Detection, Classification, ImageClass, Style, Technique
 from io import BytesIO, StringIO
 import zipfile
 
-from .serializers import ImageSerializer, StyleSerializer, ImageClassSerializer, ClassificationSerializer, DetectionSerializer
+from .serializers import ImageSerializer, StyleSerializer, ImageClassSerializer, ClassificationSerializer, \
+    DetectionSerializer, TechniqueSerializer
 
 
 class ImageAPI(generics.RetrieveAPIView):
@@ -45,47 +46,46 @@ class ImageDeleteAPI(generics.GenericAPIView):
         })
 
 
-class DownloadAPI(views.APIView):
+class DetectionsDownloadAPI(views.APIView):
     # Разобраться с permissions
     # permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, format=None):
         zip_file = BytesIO()
-        # with zipfile.ZipFile(zip_file, 'w') as f:
-        #     for image in Image.objects.all():
-        #         absolute_path = image.image_file.path
-        #         rel = absolute_path[len(settings.MEDIA_ROOT) + len(os.sep):]
-        #         f.write(absolute_path, rel)
+        print('in detections')
+        with zipfile.ZipFile(zip_file, 'w') as f:
+            for image in Image.objects.filter(pk__in=Detection.objects.values_list('image_id', flat=True)):
+                absolute_path = image.image_file.path
+                rel = absolute_path[len(settings.MEDIA_ROOT) + len(os.sep):]
+                f.write(absolute_path, rel)
 
-        #     output = StringIO()
-        #     headers = ['Путь', 'Стиль', 'Класс', 'Смысл', 'x1', 'y1', 'x2', 'y2']
+            output = StringIO()
+            headers = ['Путь', 'Класс', 'x1', 'y1', 'x2', 'y2']
 
-        #     csv_writer = csv.writer(output, delimiter=';')
-        #     csv_writer.writerow(headers)
+            csv_writer = csv.writer(output, delimiter=';')
+            csv_writer.writerow(headers)
 
-        #     for annotation in Annotation.objects.all().select_related('image'):
-        #         row = [
-        #             annotation.image.image_file.path[len(settings.MEDIA_ROOT) + len(os.sep):],
-        #             str(annotation.image.style),
-        #             str(annotation.image_class),
-        #             annotation.sense,
-        #             annotation.left,
-        #             annotation.top,
-        #             annotation.right,
-        #             annotation.bottom
-        #         ]
-        #         csv_writer.writerow(row)
+            for detection in Detection.objects.all().select_related('image'):
+                row = [
+                    detection.image.image_file.path[len(settings.MEDIA_ROOT) + len(os.sep):],
+                    str(detection.image_class),
+                    detection.x1,
+                    detection.y1,
+                    detection.x2,
+                    detection.y2
+                ]
+                csv_writer.writerow(row)
 
-        #     content = output.getvalue()
-        #     f.writestr('annotations.csv', content)
+            content = output.getvalue()
+            f.writestr('detections.csv', content)
 
-        # response = HttpResponse(zip_file.getvalue())
-        # response['Content-Type'] = 'text/html; charset=utf-8'
-        # response['Content-Disposition'] = 'attachment; filename={}'.format(
-        #     "annotation_info.zip"
-        # )
+        response = HttpResponse(zip_file.getvalue())
+        response['Content-Type'] = 'text/html; charset=utf-8'
+        response['Content-Disposition'] = 'attachment; filename={}'.format(
+            "detection_info.zip"
+        )
 
-        # return response
+        return response
 
 
 class StyleApi(generics.ListAPIView):
@@ -101,27 +101,39 @@ class StyleApi(generics.ListAPIView):
         return Style.objects.filter(filters)
 
 
+class TechniqueApi(generics.ListAPIView):
+    permissions_classes = [permissions.IsAuthenticated, ]
+    serializer_class = TechniqueSerializer
+
+    def get_queryset(self):
+        filters = Q()
+        q = self.request.query_params.get('q')
+        if q:
+            filters &= Q(title__contains=q.lower())
+
+        return Technique.objects.filter(filters)
+
+
 class ClassificationAPI(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = ClassificationSerializer
 
     def post(self, request, *args, **kwargs):
         data = request.data
-
-        print()
-        print(data)
-        print()
-        
+       
         Classification.objects.create(
             user=request.user,
-            image_id=data['image_for_classification_id'],
-            technique_id=data['technique_id'],
-            image_class_id=data['image_class_id'],
-            style_id=data['style_id']
+            image_id=data.get('image_for_classification'),
+            technique_id=data.get('technique'),
+            image_class_id=data.get('image_class'),
+            style_id=data.get('style')
         )
 
+        image = Image.get_random_image()
+
         return Response({
-            'image': ImageSerializer(request.user.get_image_for_update()).data
+            'image': ImageSerializer(image).data,
+            'classes': ImageClassSerializer(ImageClass.classes_for_classification(), many=True).data
         })
 
 

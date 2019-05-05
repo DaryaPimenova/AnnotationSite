@@ -16,6 +16,8 @@ function getOptions(input, href, additional) {
 
 export const getStyleOptions = (input) => getOptions(input, '/api/styles/');
 
+export const getTechniqueOptions = (input) => getOptions(input, '/api/techniques/');
+
 export function errorMessageToString(errors) {
     let errorMessage = 'Неизвестная ошибка';
 

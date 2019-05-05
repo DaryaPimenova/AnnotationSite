@@ -40,10 +40,10 @@ export const saveDetections = (detections, image_id) => {
     }
 }
 
-export const saveClassification = (image_for_classification_id, style, classes) => {
+export const saveClassification = (image_for_classification, style, technique, image_class) => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};
-        let body = JSON.stringify({image_for_classification_id, style, classes});
+        let body = JSON.stringify({image_for_classification, style, technique, image_class});
 
         let {token} = getState().auth;
 
@@ -68,7 +68,7 @@ export const saveClassification = (image_for_classification_id, style, classes) 
                 if (res.status === 200) {
                     let data = {
                         image_for_classification_url: res.data.image.image_url,
-                        image_for_classification_id: res.data.image.image_id,
+                        image_for_classification: res.data.image.image_id,
                     }
                     console.log('data:', res.data)
                     dispatch({type: C.SAVE_CLASSIFICATION_SUCCESSFUL, data: data });
@@ -114,7 +114,7 @@ export const deleteImage = (image_id, is_classification=false) => {
                     if (is_classification) {
                         data = {
                             image_for_classification_url: res.data.image.image_url,
-                            image_for_classification_id: res.data.image.image_id,
+                            image_for_classification: res.data.image.image_id,
                         }
                     } else {
                         data = res.data.image;
@@ -160,7 +160,7 @@ export const loadImage = (is_classification=false) => {
                     if (is_classification) {
                         data = {
                             image_for_classification_url: res.data.image.image_url,
-                            image_for_classification_id: res.data.image.image_id,
+                            image_for_classification: res.data.image.image_id,
                         }
                     } else {
                         data = res.data.image;

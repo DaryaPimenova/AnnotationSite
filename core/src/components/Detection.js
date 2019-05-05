@@ -138,7 +138,7 @@ class Detection extends React.Component {
                 <Menu />
                 {this.props.user.is_superuser
                     ?
-                    <a href="/api/annotations/download/">Выгрузить отчёт</a>
+                    <a className='btn' href="/api/detections/download/">Выгрузить отчёт</a>
                     :
                     null
                 }

@@ -6,7 +6,7 @@ const initialState = {
     image_url: '',
     image_id: -1,
     image_for_classification_url: '',
-    image_for_classification_id: -1,
+    image_for_classification: -1,
     classes: [],
     statistics_messages: [],
     errors: {},
