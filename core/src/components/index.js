@@ -5,5 +5,6 @@ import Classification from "./Classification";
 import Statistics from "./Statistics";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
+import MainPage from "./MainPage";
 
-export {Menu, Detection, Classification, Statistics, SignInForm, SignUpForm, NotFound}
+export {Menu, Detection, Classification, Statistics, SignInForm, SignUpForm, NotFound, MainPage}

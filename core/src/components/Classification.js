@@ -118,14 +118,17 @@ class Classification extends React.Component {
                         </Button>
                         {this.props.user.is_superuser
                             ?
-                            <Button 
-                                type='button' 
-                                id="delete-image" 
-                                className='btn btn-primary btn-sm' 
-                                onClick={this.onDeleteImage}
-                            >
-                                Удалить
-                            </Button>
+                            <div style={{marginTop: '20px'}}>
+                                <Button 
+                                    type='button' 
+                                    id="delete-image" 
+                                    className='btn btn-primary btn-sm' 
+                                    onClick={this.onDeleteImage}
+                                >
+                                    Удалить
+                                </Button>
+                                <a className='btn btn-download' href="/api/classifications/download/">Выгрузить отчёт</a>
+                            </div>
                             :
                             null
                         }

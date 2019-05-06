@@ -14,5 +14,6 @@ urlpatterns = [
     url("^annotations/save/$", api.DetectionSaveAPI.as_view()),
     url("^annotations/image/save/$", api.ClassificationAPI.as_view()),
     url("^detections/download/$", api.DetectionsDownloadAPI.as_view()),
+    url("^classifications/download/$", api.ClassificationsDownloadAPI.as_view()),
     url("^get_statistics/$", api.StatisticsAPI.as_view())
 ]

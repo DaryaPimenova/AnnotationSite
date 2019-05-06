@@ -52,7 +52,6 @@ class DetectionsDownloadAPI(views.APIView):
 
     def get(self, request, format=None):
         zip_file = BytesIO()
-        print('in detections')
         with zipfile.ZipFile(zip_file, 'w') as f:
             for image in Image.objects.filter(pk__in=Detection.objects.values_list('image_id', flat=True)):
                 absolute_path = image.image_file.path
@@ -83,6 +82,45 @@ class DetectionsDownloadAPI(views.APIView):
         response['Content-Type'] = 'text/html; charset=utf-8'
         response['Content-Disposition'] = 'attachment; filename={}'.format(
             "detection_info.zip"
+        )
+
+        return response
+
+
+class ClassificationsDownloadAPI(views.APIView):
+    # Разобраться с permissions
+    # permission_classes = [permissions.IsAuthenticated, ]
+
+    def get(self, request, format=None):
+        zip_file = BytesIO()
+        with zipfile.ZipFile(zip_file, 'w') as f:
+            for image in Image.objects.filter(pk__in=Classification.objects.values_list('image_id', flat=True)):
+                absolute_path = image.image_file.path
+                rel = absolute_path[len(settings.MEDIA_ROOT) + len(os.sep):]
+                f.write(absolute_path, rel)
+
+            output = StringIO()
+            headers = ['Путь', 'Класс', 'Стиль', 'Техника']
+
+            csv_writer = csv.writer(output, delimiter=';')
+            csv_writer.writerow(headers)
+
+            for classification in Classification.objects.all().select_related('image'):
+                row = [
+                    classification.image.image_file.path[len(settings.MEDIA_ROOT) + len(os.sep):],
+                    str(classification.image_class),
+                    classification.style,
+                    classification.technique,
+                ]
+                csv_writer.writerow(row)
+
+            content = output.getvalue()
+            f.writestr('classification.csv', content)
+
+        response = HttpResponse(zip_file.getvalue())
+        response['Content-Type'] = 'text/html; charset=utf-8'
+        response['Content-Disposition'] = 'attachment; filename={}'.format(
+            "classification.zip"
         )
 
         return response

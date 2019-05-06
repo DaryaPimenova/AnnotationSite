@@ -136,12 +136,6 @@ class Detection extends React.Component {
         return (
             <div>
                 <Menu />
-                {this.props.user.is_superuser
-                    ?
-                    <a className='btn' href="/api/detections/download/">Выгрузить отчёт</a>
-                    :
-                    null
-                }
                 <Row className="justify-content-md-center">
                     <Col md={5}>
                         <div className='image-annotation'>
@@ -203,9 +197,17 @@ class Detection extends React.Component {
                         }
                         {this.props.user.is_superuser
                             ?
-                            <Button type='button' id="delete-image" className='btn btn-primary btn-sm' onClick={this.onDeleteImage}>
-                                Удалить
-                            </Button>
+                            <span>
+                                <Button 
+                                    type='button' 
+                                    id="delete-image" 
+                                    className='btn btn-primary btn-sm' 
+                                    onClick={this.onDeleteImage}
+                                >
+                                    Удалить
+                                </Button>
+                                <a className='btn btn-download' href="/api/detections/download/">Выгрузить отчёт</a>
+                            </span>
                             :
                             null
                         }

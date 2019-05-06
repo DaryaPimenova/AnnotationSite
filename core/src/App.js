@@ -15,7 +15,8 @@ import {
     Classification,
     Statistics,
     Menu,
-    NotFound
+    NotFound,
+    MainPage
 } from "./components"
 
 
@@ -46,6 +47,7 @@ class RootContainerComponent extends Component {
         return (
             <BrowserRouter>
                 <Switch>
+                    <PrivateRoute exact path="/" component={MainPage} />
                     <PrivateRoute exact path="/detection" component={Detection} />
                     <PrivateRoute exact path="/classification" component={Classification} />
                     <PrivateRoute exact path="/statistics" component={Statistics} />
