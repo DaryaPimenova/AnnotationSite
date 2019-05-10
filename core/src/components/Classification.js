@@ -51,7 +51,7 @@ class Classification extends React.Component {
     }
 
     render() {
-        const { image_for_classification_url, classes } = this.props;
+        const { image_for_classification_url, classes, user } = this.props;
 
         return (
             <div>
@@ -116,7 +116,7 @@ class Classification extends React.Component {
                         <Button type='button' className='btn btn-primary btn-sm' onClick={this.onLoadNextImage}>
                             Пропустить...
                         </Button>
-                        {this.props.user.is_superuser
+                        {user && user.is_superuser
                             ?
                             <div style={{marginTop: '20px'}}>
                                 <Button 

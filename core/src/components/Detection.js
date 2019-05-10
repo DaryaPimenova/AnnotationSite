@@ -131,7 +131,7 @@ class Detection extends React.Component {
     }
 
     render() {
-        const { saveDetections, image_url, classes} = this.props;
+        const { saveDetections, image_url, classes, user} = this.props;
 
         return (
             <div>
@@ -195,7 +195,7 @@ class Detection extends React.Component {
                                 Пропустить...
                             </Button>
                         }
-                        {this.props.user.is_superuser
+                        {user && user.is_superuser
                             ?
                             <span>
                                 <Button 

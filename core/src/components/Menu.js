@@ -6,8 +6,41 @@ import {auth} from "../actions";
 
 class Menu extends React.Component {
 
+    getPanel = () => {
+        const {isAuthenticated, isSuperUser} = this.props;
+        let elements = [
+            <NavLink to="/detection" activeClassName="nav-link" className="nav-link">
+                Детекция
+            </NavLink>,
+            <NavLink to="/classification" activeClassName="nav-link" className="nav-link">
+                Классификация
+            </NavLink>
+        ]
+
+        if (isSuperUser) {
+            elements.push(
+                <NavLink to="/statistics" activeClassName="nav-link" className="nav-link">
+                    Статистика
+                </NavLink>
+            );
+        }
+
+        if (!isAuthenticated) {
+            elements = elements.concat([
+                <NavLink to="/login" activeClassName="nav-link" className="nav-link">
+                    Войти
+                </NavLink>,
+                <NavLink exact to="/register" activeClassName="nav-link" className="nav-link">
+                    Зарегистрироваться
+                </NavLink>
+            ]);
+        }
+
+        return elements;
+    }
+
     render() {
-        const { isAuthenticated, isSuperUser, logout } = this.props;
+        const { isAuthenticated, logout } = this.props;
 
         return (
         <div>
@@ -24,47 +57,20 @@ class Menu extends React.Component {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarText">
-                {isAuthenticated 
-                    ?
                     <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <NavLink to="/detection" activeClassName="nav-link" className="nav-link">
-                                Детекция
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to="/classification" activeClassName="nav-link" className="nav-link">
-                                Классификация
-                            </NavLink>
-                        </li>
-                        {isSuperUser
-                            ?
-                            <li className="nav-item">
-                                <NavLink to="/statistics" activeClassName="nav-link" className="nav-link">
-                                    Статистика
-                                </NavLink>
+                        {this.getPanel().map((el, i) => {
+                            return (
+                                <li className="nav-item" key={`li-${i}`}>
+                                    {el}
+                                </li>
+                            )
+                        })}
+                        {isAuthenticated && 
+                            <li className="nav-item nav-link logout-link">
+                                <a onClick={logout} >Выйти</a>
                             </li>
-                            :
-                            null
                         }
-                        <li className="nav-item nav-link logout-link">
-                            <a onClick={logout} >Выйти</a>
-                        </li>
                     </ul>
-                    :
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <NavLink to="/login" activeClassName="nav-link" className="nav-link">
-                                Войти
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink exact to="/register" activeClassName="nav-link" className="nav-link">
-                                Зарегистрироваться
-                            </NavLink>
-                        </li>
-                    </ul>
-                }
                 </div>
             </nav>
         </div>
@@ -73,9 +79,9 @@ class Menu extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const { user } = state.auth;
+    const { user, isAuthenticated } = state.auth;
     return {
-        isAuthenticated: user,
+        isAuthenticated: isAuthenticated,
         isSuperUser: user && user.is_superuser
     }
 }

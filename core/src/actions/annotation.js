@@ -70,7 +70,7 @@ export const saveClassification = (image_for_classification, style, technique, i
                         image_for_classification_url: res.data.image.image_url,
                         image_for_classification: res.data.image.image_id,
                     }
-                    console.log('data:', res.data)
+
                     dispatch({type: C.SAVE_CLASSIFICATION_SUCCESSFUL, data: data });
                     return data;
                 } else if (res.status === 403 || res.status === 401) {

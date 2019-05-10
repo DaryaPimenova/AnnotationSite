@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from rest_framework import permissions, generics, views
 from rest_framework.response import Response
+from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Q
 from django.conf import settings
@@ -15,7 +16,6 @@ from .serializers import ImageSerializer, StyleSerializer, ImageClassSerializer,
 
 
 class ImageAPI(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = ImageSerializer
 
     def get(self, request, *args, **kwargs):
@@ -153,14 +153,17 @@ class TechniqueApi(generics.ListAPIView):
 
 
 class ClassificationAPI(generics.GenericAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = ClassificationSerializer
 
     def post(self, request, *args, **kwargs):
         data = request.data
+
+        user = request.user
+        if user.pk is None:
+            user, _ = get_user_model().objects.get_or_create(username='anonymous_user')
        
         Classification.objects.create(
-            user=request.user,
+            user=user,
             image_id=data.get('image_for_classification'),
             technique_id=data.get('technique'),
             image_class_id=data.get('image_class'),
@@ -176,12 +179,14 @@ class ClassificationAPI(generics.GenericAPIView):
 
 
 class DetectionSaveAPI(generics.GenericAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = DetectionSerializer
 
     def post(self, request, *args, **kwargs):
         image_id = request.data['image_id']
         detections = self.__prepare_data(request.data, image_id)
+        user = request.user
+        if user.pk is None:
+            user, _ = get_user_model().objects.get_or_create(username='anonymous_user')
 
         with transaction.atomic():
             for detection in detections:
@@ -189,7 +194,7 @@ class DetectionSaveAPI(generics.GenericAPIView):
                 image_class = detection.pop('image_class', None)
                 serializer = self.get_serializer(data=detection)
                 serializer.is_valid(raise_exception=True)
-                serializer.save(image_class_id=image_class, image_id=image_id, user=request.user)
+                serializer.save(image_class_id=image_class, image_id=image_id, user=user)
 
         return Response({
             'image': ImageSerializer(Image.get_random_image()).data,
