@@ -12,24 +12,24 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import Select from 'react-select';
 
 
-class ImageAnnotation extends React.Component {
+class Detection extends React.Component {
 
     state = {
-        annotations: [],
-        annotation: {},
-        activeAnnotations: [],
+        detections: [],
+        detection: {},
+        activeDetections: [],
     }
 
-    onChange = (annotation) => {
-        this.setState({ annotation })
+    onChange = (detection) => {
+        this.setState({ detection })
     }
 
-    onSubmit = (annotation) => {
-        const { geometry, data } = annotation
+    onSubmit = (detection) => {
+        const { geometry, data } = detection;
 
         this.setState({
-            annotation: {},
-            annotations: this.state.annotations.concat({
+            detection: {},
+            detections: this.state.detections.concat({
                 geometry,
                 data: {
                     ...data,
@@ -39,23 +39,23 @@ class ImageAnnotation extends React.Component {
         })
     }
 
-    onChangeAnnotations = (annotation, id, word) => {
-        let annotations = [...this.state.annotations]
+    onChangeDetections = (detection, id, word) => {
+        let detections = [...this.state.detections]
 
-        annotations[id] = {
-            ...annotation,
+        detections[id] = {
+            ...detection,
             data: {
-                ...annotation.data,
+                ...detection.data,
                 ...word
             }
         }
 
-        this.setState({annotations})
+        this.setState({detections})
     }
 
-    onSaveAnnotations = (event) => {
+    onSaveDetections = (event) => {
         event.preventDefault();
-        this.props.saveAnnotations(this.state.annotations, this.props.image_id);
+        this.props.saveDetections(this.state.detections, this.props.image_id);
     }
 
     onLoadNextImage = (event) => {
@@ -64,9 +64,9 @@ class ImageAnnotation extends React.Component {
     }
 
     onDelete = (id) => {
-        let annotations = [...this.state.annotations]
-        annotations.splice(id, 1)
-        this.setState({annotations})
+        let detections = [...this.state.detections]
+        detections.splice(id, 1)
+        this.setState({detections})
     }
 
     onDeleteImage = () => {
@@ -78,34 +78,34 @@ class ImageAnnotation extends React.Component {
 
     onMouseOver = (id) => e => {
         this.setState({
-            activeAnnotations: [
-                ...this.state.activeAnnotations,
+            activeDetections: [
+                ...this.state.activeDetections,
                 id
             ]
         })
     }
 
     onMouseOut = (id) => e => {
-        const index = this.state.activeAnnotations.indexOf(id)
+        const index = this.state.activeDetections.indexOf(id)
 
         this.setState({
-            activeAnnotations: [
-                ...this.state.activeAnnotations.slice(0, index),
-                ...this.state.activeAnnotations.slice(index + 1)
+            activeDetections: [
+                ...this.state.activeDetections.slice(0, index),
+                ...this.state.activeDetections.slice(index + 1)
             ]
         })
     }
 
-    activeAnnotationComparator = (a, b) => {
+    activeDetectionComparator = (a, b) => {
         return a.data.id === b
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.image_id != this.props.image_id) {
             this.setState({
-                annotations: [],
-                annotation: {},
-                activeAnnotations: [],
+                detections: [],
+                detection: {},
+                activeDetections: [],
             })
         }
     }
@@ -131,29 +131,23 @@ class ImageAnnotation extends React.Component {
     }
 
     render() {
-        const { saveAnnotations, image_url, classes} = this.props;
+        const { saveDetections, image_url, classes, user} = this.props;
 
         return (
             <div>
                 <Menu />
-                {this.props.user.is_superuser
-                    ?
-                    <a href="/api/annotations/download/">Выгрузить отчёт</a>
-                    :
-                    null
-                }
                 <Row className="justify-content-md-center">
                     <Col md={5}>
                         <div className='image-annotation'>
                             <Annotation                    
                                 src={image_url}
-                                annotations={this.state.annotations}
+                                annotations={this.state.detections}
                                 type={this.state.type}
-                                value={this.state.annotation}
+                                value={this.state.detection}
                                 onChange={this.onChange}
                                 onSubmit={this.onSubmit}
-                                activeAnnotationComparator={this.activeAnnotationComparator}
-                                activeAnnotations={this.state.activeAnnotations}
+                                activeAnnotationComparator={this.activeDetectionsComparator}
+                                activeAnnotations={this.state.activeDetections}
                                 renderSelector={Selector}
                                 renderEditor={this.renderEditor}
                                 renderHighlight={Highlight}
@@ -162,39 +156,24 @@ class ImageAnnotation extends React.Component {
                         </div>
                     </Col>
                     <Col md={4}>
-                        <Form className='form-annotation' onSubmit={::this.onSaveAnnotations}>
-                        <h2>Annotations</h2>
-                        {this.state.annotations.map((annotation, id) => (
+                        <Form className='form-annotation' onSubmit={::this.onSaveDetections}>
+                        <h2>Detections</h2>
+                        {this.state.detections.map((detection, id) => (
                             <Row
                                 className='form-row' 
                                 key={`${id}`}               
-                                onMouseOver={this.onMouseOver(annotation.data.id)}
-                                onMouseOut={this.onMouseOut(annotation.data.id)}
+                                onMouseOver={this.onMouseOver(detection.data.id)}
+                                onMouseOut={this.onMouseOut(detection.data.id)}
                             >
                                 <Col className='form-column'>
                                     <Select
-                                        value={annotation.data.image_class}
+                                        value={detection.data.image_class}
                                         options={this.getClasses()}
-                                        onChange={opt => this.onChangeAnnotations(
-                                            annotation,
+                                        onChange={opt => this.onChangeDetections(
+                                            detection,
                                             id,
                                             {image_class: opt},
                                             `${id}image_class`
-                                        )}
-                                    />
-                                </Col>
-                                <Col className="form-column">
-                                    <input 
-                                        className="form-control"
-                                        type='text' 
-                                        value={annotation.data.sense}
-                                        key={`${(id+1)*3}`}
-                                        required="required"
-                                        onChange={e => this.onChangeAnnotations(
-                                            annotation,
-                                            id,
-                                            {sense: e.target.value},
-                                            `${id}sense`
                                         )}
                                     />
                                 </Col>
@@ -206,7 +185,7 @@ class ImageAnnotation extends React.Component {
                             </Row>
                         ))}
                         <div style={{marginTop: '20px'}}>
-                        {this.state.annotations.length > 0 
+                        {this.state.detections.length > 0 
                             ? 
                             <Button type='submit' className='btn btn-primary btn-sm'>
                                 Сохранить
@@ -216,11 +195,19 @@ class ImageAnnotation extends React.Component {
                                 Пропустить...
                             </Button>
                         }
-                        {this.props.user.is_superuser
+                        {user && user.is_superuser
                             ?
-                            <Button type='button' id="delete-image" className='btn btn-primary btn-sm' onClick={this.onDeleteImage}>
-                                Удалить
-                            </Button>
+                            <span>
+                                <Button 
+                                    type='button' 
+                                    id="delete-image" 
+                                    className='btn btn-primary btn-sm' 
+                                    onClick={this.onDeleteImage}
+                                >
+                                    Удалить
+                                </Button>
+                                <a className='btn btn-download' href="/api/detections/download/">Выгрузить отчёт</a>
+                            </span>
                             :
                             null
                         }
@@ -244,10 +231,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        saveAnnotations: (annotations, image_id) => dispatch(annotation.saveAnnotations(annotations, image_id)),
+        saveDetections: (detections, image_id) => dispatch(annotation.saveDetections(detections, image_id)),
         loadImage: () => dispatch(annotation.loadImage()),
         deleteImage: (image_id) => dispatch(annotation.deleteImage(image_id))
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImageAnnotation);
+export default connect(mapStateToProps, mapDispatchToProps)(Detection);

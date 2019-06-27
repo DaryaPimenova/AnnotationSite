@@ -1,17 +1,12 @@
 from django.core.files import File
 from django.db import models
 from PIL import Image as PIL_IMAGE
-from core.models import ImageClass, ImageToClass, Style
+from random import randint
+from django.db.models import Q
 
 
 class Image(models.Model):
     image_file = models.ImageField('Изображение', upload_to='annotated_images')
-    style = models.ForeignKey('Style', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
-    classes = models.ManyToManyField('ImageClass',
-                                     through='ImageToClass',
-                                     verbose_name='Классы изображения',
-                                     related_name='images')
-
     height = models.IntegerField('Высота', default=0)
     width = models.IntegerField('Ширина', default=0)
 
@@ -33,3 +28,21 @@ class Image(models.Model):
             width=tmp_img.width
         )
         new_image.image_file.save(path_to_file.split('/')[-1], django_file, save=True)
+
+    @classmethod
+    def get_random_image(cls, exclude_image_ids=None):
+        """
+        Выбираем случайную картинку
+        """
+
+        img = None
+        filters = Q()
+        if exclude_image_ids is not None:
+            filters &= Q(pk__in=exclude_image_ids)
+
+        if cls.objects.exists():
+            count = cls.objects.count()
+            random_index = randint(0, count - 1)
+            img = cls.objects.all()[random_index]
+
+        return img

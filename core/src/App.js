@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
+import {Route, Switch, BrowserRouter} from 'react-router-dom';
 
 import { Provider, connect } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
@@ -11,11 +11,12 @@ import annotationApp from "./reducers";
 import {
     SignInForm,
     SignUpForm,
-    ImageAnnotation,
-    ImageUpdater,
+    Detection,
+    Classification,
     Statistics,
     Menu,
-    NotFound
+    NotFound,
+    MainPage
 } from "./components"
 
 
@@ -28,12 +29,10 @@ class RootContainerComponent extends Component {
         this.props.loadUser();
     }
 
-    PrivateRoute = ({component: ChildComponent, ...rest}) => {
+    LoadingRoute = ({component: ChildComponent, ...rest}) => {
         return <Route {...rest} render={props => {
             if (this.props.auth.isLoading) {
                 return <em>Loading...</em>;
-            } else if (!this.props.auth.isAuthenticated) {
-                return <Redirect to="/login" />;
             } else {
                 return <ChildComponent {...props} />
             }
@@ -41,14 +40,15 @@ class RootContainerComponent extends Component {
     }
 
     render() {
-        let { PrivateRoute } = this;
+        let { LoadingRoute } = this;
 
         return (
             <BrowserRouter>
                 <Switch>
-                    <PrivateRoute exact path="/" component={ImageAnnotation} />
-                    <PrivateRoute exact path="/updater" component={ImageUpdater} />
-                    <PrivateRoute exact path="/statistics" component={Statistics} />
+                    <LoadingRoute exact path="/" component={MainPage} />
+                    <LoadingRoute exact path="/detection" component={Detection} />
+                    <LoadingRoute exact path="/classification" component={Classification} />
+                    <LoadingRoute exact path="/statistics" component={Statistics} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />
                     <Route component={NotFound} />

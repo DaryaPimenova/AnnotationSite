@@ -1,9 +1,10 @@
 import Menu from "./Menu";
 import NotFound from "./NotFound";
-import ImageAnnotation from "./ImageAnnotation";
-import ImageUpdater from "./ImageUpdater";
+import Detection from "./Detection";
+import Classification from "./Classification";
 import Statistics from "./Statistics";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
+import MainPage from "./MainPage";
 
-export {Menu, ImageAnnotation, ImageUpdater, Statistics, SignInForm, SignUpForm, NotFound}
+export {Menu, Detection, Classification, Statistics, SignInForm, SignUpForm, NotFound, MainPage}
