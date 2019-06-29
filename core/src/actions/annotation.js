@@ -218,3 +218,43 @@ export const getStatistics = () => {
             })
     }
 }
+
+export const getImagesGalery = () => {
+    return (dispatch, getState) => {
+        let headers = {"Content-Type": "application/json"};
+        let {token} = getState().auth;
+
+        if (token) {
+            headers["Authorization"] = `Token ${token}`;
+        }
+
+        dispatch({type: C.GET_IMAGES_GALLERY_REQUEST});
+
+        return fetch('/api/get_images_gallery/', {headers, })
+            .then(res => {
+
+                if (res.status < 500) {
+                    return res.json().then(data => {
+                        return {status: res.status, data};
+                    })
+                } else {
+                    console.log("Server Error!");
+                    throw res;
+                }
+            })
+            .then(res => {
+                let data = res.data;
+                if (res.status === 200) {
+                    console.log('DATA:', data)
+                    dispatch({type: C.GET_IMAGES_GALLERY_SUCCESSFUL, data: data });
+                    return data;
+                } else if (res.status === 403 || res.status === 401) {
+                    dispatch({type: C.GET_IMAGES_GALLERY_FAILED, data: data});
+                    throw data;
+                } else {
+                    dispatch({type: C.GET_IMAGES_GALLERY_FAILED, data: data});
+                    throw data;
+                }
+            })
+    }
+}

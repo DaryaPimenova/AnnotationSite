@@ -10,6 +10,7 @@ const initialState = {
     classes: [],
     statistics_messages: [],
     errors: {},
+    images_gallery: [],
 };
 
 
@@ -116,6 +117,27 @@ export default function annotation(state=initialState, action) {
             }
 
         case C.GET_STATISTICS_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                errors: action.data
+            }
+
+        case C.GET_IMAGES_GALLERY_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case C.GET_IMAGES_GALLERY_SUCCESSFUL:
+            return {
+                ...state,
+                ...action.data,
+                isLoading: false,
+                errors: null
+            }
+        
+        case C.GET_IMAGES_GALLERY_FAILED:
             return {
                 ...state,
                 isLoading: false,

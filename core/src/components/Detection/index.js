@@ -1,13 +1,13 @@
 import React from 'react';
 import Annotation from 'react-image-annotation';
-import Menu from './Menu';
+import Menu from '../Menu';
 import Box from './Box';
 import Selector from './Selector';
 import Highlight from './Highlight';
 import Content from './Content';
 import Editor from './Editor';
 import {connect} from 'react-redux';
-import {annotation} from "../actions";
+import {annotation} from "../../actions";
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import Select from 'react-select';
 

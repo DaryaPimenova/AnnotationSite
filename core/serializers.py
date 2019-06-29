@@ -20,6 +20,18 @@ class StyleSerializer(serializers.ModelSerializer):
         fields = ('pk', 'title')
 
 
+class ImageGallerySerializer(serializers.ModelSerializer):
+    src = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Image
+        fields = ('src', 'height', 'width')
+
+    @staticmethod
+    def get_src(obj):
+        return obj.image_file.url
+
+
 class ImageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     image_id = serializers.SerializerMethodField()
