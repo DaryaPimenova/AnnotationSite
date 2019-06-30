@@ -12,6 +12,9 @@ class Menu extends React.Component {
             <NavLink to="/" activeClassName="nav-link" className="nav-link">
                 Главная
             </NavLink>,
+            <NavLink to="/gallery" activeClassName="nav-link" className="nav-link">
+                Галерея
+            </NavLink>,
             <NavLink to="/detection" activeClassName="nav-link" className="nav-link">
                 Детекция
             </NavLink>,
@@ -47,15 +50,6 @@ class Menu extends React.Component {
 
         return (
         <div>
-            <input type="checkbox" id="hmt" className="hidden-menu-ticker" />
-            <label className="btn-menu" htmlFor="hmt">
-              <span className="first"></span>
-              <span className="second"></span>
-              <span className="third"></span>
-            </label>
-            <ul className="hidden-menu">
-              <li>Здесь должна быть инструкция</li>  
-            </ul>
             <nav className="navbar navbar-dark bg-dark navbar-expand-lg navbar-light">
                 <button className="navbar-toggler"
                         type="button" 

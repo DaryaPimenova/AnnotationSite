@@ -12,7 +12,7 @@ from io import BytesIO, StringIO
 import zipfile
 
 from .serializers import ImageSerializer, StyleSerializer, ImageClassSerializer, ClassificationSerializer, \
-    DetectionSerializer, TechniqueSerializer
+    DetectionSerializer, TechniqueSerializer, ImageGallerySerializer
 
 
 class ImageAPI(generics.RetrieveAPIView):
@@ -26,6 +26,26 @@ class ImageAPI(generics.RetrieveAPIView):
         return Response({
             'image': ImageSerializer(image).data,
             'classes': ImageClassSerializer(classes, many=True).data
+        })
+
+
+class ImagesGalleryAPI(generics.RetrieveAPIView):
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'images_gallery': ImageGallerySerializer(Image.objects.all(), many=True).data
+        })
+
+
+class BulkDeleteImagesAPI(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        images = Image.objects.filter(pk__in=request.data['image_ids'])
+        print(request.data['image_ids'])
+        images.delete()
+        return Response({
+            'images_gallery': ImageGallerySerializer(Image.objects.all(), many=True).data
         })
 
 

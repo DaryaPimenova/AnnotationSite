@@ -16,7 +16,8 @@ import {
     Statistics,
     Menu,
     NotFound,
-    MainPage
+    MainPage,
+    OurGallery
 } from "./components"
 
 
@@ -46,6 +47,7 @@ class RootContainerComponent extends Component {
             <BrowserRouter>
                 <Switch>
                     <LoadingRoute exact path="/" component={MainPage} />
+                    <LoadingRoute exact path="/gallery" component={OurGallery} />
                     <LoadingRoute exact path="/detection" component={Detection} />
                     <LoadingRoute exact path="/classification" component={Classification} />
                     <LoadingRoute exact path="/statistics" component={Statistics} />
@@ -66,9 +68,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadUser: () => {
-            return dispatch(auth.loadUser());
-        }
+        loadUser: () => dispatch(auth.loadUser()),
     }
 }
 
