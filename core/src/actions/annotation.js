@@ -21,7 +21,7 @@ export const saveDetections = (detections, image_id) => {
                         return {status: res.status, data};
                     })
                 } else {
-                    console.log("Server Error!");
+                    alert("Server Error!");
                     throw res;
                 }
             })
@@ -29,9 +29,6 @@ export const saveDetections = (detections, image_id) => {
                 if (res.status === 200) {
                     dispatch({type: C.SAVE_DETECTIONS_SUCCESSFUL, data: res.data.image });
                     return res.data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: C.SAVE_DETECTIONS_FAILED, data: res.data});
-                    throw res.data;
                 } else {
                     dispatch({type: C.SAVE_DETECTIONS_FAILED, data: res.data});
                     throw res.data;
@@ -73,9 +70,6 @@ export const saveClassification = (image_for_classification, style, technique, i
 
                     dispatch({type: C.SAVE_CLASSIFICATION_SUCCESSFUL, data: data });
                     return data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: C.SAVE_CLASSIFICATION_FAILED, data: res.data});
-                    throw res.data;
                 } else {
                     dispatch({type: C.SAVE_CLASSIFICATION_FAILED, data: res.data});
                     throw res.data;
@@ -121,11 +115,44 @@ export const deleteImage = (image_id, is_classification=false) => {
                     }
                     dispatch({type: C.DELETE_IMAGE_SUCCESSFUL, data: data });
                     return res.data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: C.DELETE_IMAGE_FAILED, data: res.data});
-                    throw res.data;
                 } else {
                     dispatch({type: C.DELETE_IMAGE_FAILED, data: res.data});
+                    throw res.data;
+                }
+            })
+    }
+}
+
+export const bulkDeleteImages = (image_ids) => {
+    return (dispatch, getState) => {
+        let headers = {"Content-Type": "application/json"};
+        let body = JSON.stringify({image_ids});
+
+        let {token} = getState().auth;
+
+        if (token) {
+            headers["Authorization"] = `Token ${token}`;
+        }
+
+        dispatch({type: C.BULK_DELETE_IMAGES_REQUEST});
+
+        return fetch("/api/bulk_delete_images/", {headers, body, method: "POST"})
+            .then(res => {
+                if (res.status < 500) {
+                    return res.json().then(data => {
+                        return {status: res.status, data};
+                    })
+                } else {
+                    console.log("Server Error!");
+                    throw res;
+                }
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    dispatch({type: C.BULK_DELETE_IMAGES_SUCCESSFUL, data: res.data });
+                    return res.data;
+                } else {
+                    dispatch({type: C.BULK_DELETE_IMAGES_FAILED, data: res.data});
                     throw res.data;
                 }
             })
@@ -168,9 +195,6 @@ export const loadImage = (is_classification=false) => {
                     data.classes = res.data.classes;
                     dispatch({type: C.LOAD_IMAGE_SUCCESSFUL, data: data });
                     return res.data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: C.LOAD_IMAGE_FAILED, data: res.data});
-                    throw res.data;
                 } else {
                     dispatch({type: C.LOAD_IMAGE_FAILED, data: res.data});
                     throw res.data;
@@ -208,9 +232,6 @@ export const getStatistics = () => {
                     console.log('DATA:', data)
                     dispatch({type: C.GET_STATISTICS_SUCCESSFUL, data: data });
                     return data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: C.GET_STATISTICS_FAILED, data: data});
-                    throw data;
                 } else {
                     dispatch({type: C.GET_STATISTICS_FAILED, data: data});
                     throw data;
@@ -248,9 +269,6 @@ export const getImagesGalery = () => {
                     console.log('DATA:', data)
                     dispatch({type: C.GET_IMAGES_GALLERY_SUCCESSFUL, data: data });
                     return data;
-                } else if (res.status === 403 || res.status === 401) {
-                    dispatch({type: C.GET_IMAGES_GALLERY_FAILED, data: data});
-                    throw data;
                 } else {
                     dispatch({type: C.GET_IMAGES_GALLERY_FAILED, data: data});
                     throw data;

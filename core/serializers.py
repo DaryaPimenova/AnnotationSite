@@ -22,10 +22,15 @@ class StyleSerializer(serializers.ModelSerializer):
 
 class ImageGallerySerializer(serializers.ModelSerializer):
     src = serializers.SerializerMethodField()
+    key = serializers.SerializerMethodField()
 
     class Meta:
         model = Image
-        fields = ('src', 'height', 'width')
+        fields = ('key', 'src', 'height', 'width')
+
+    @staticmethod
+    def get_key(obj):
+        return str(obj.pk)
 
     @staticmethod
     def get_src(obj):

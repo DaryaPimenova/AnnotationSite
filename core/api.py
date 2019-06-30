@@ -33,7 +33,19 @@ class ImagesGalleryAPI(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         return Response({
-            'images_gallery': ImageGallerySerializer(Image.objects.all()[:20], many=True).data
+            'images_gallery': ImageGallerySerializer(Image.objects.all(), many=True).data
+        })
+
+
+class BulkDeleteImagesAPI(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        images = Image.objects.filter(pk__in=request.data['image_ids'])
+        print(request.data['image_ids'])
+        images.delete()
+        return Response({
+            'images_gallery': ImageGallerySerializer(Image.objects.all(), many=True).data
         })
 
 

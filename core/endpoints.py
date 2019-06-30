@@ -17,4 +17,5 @@ urlpatterns = [
     url("^classifications/download/$", api.ClassificationsDownloadAPI.as_view()),
     url("^get_statistics/$", api.StatisticsAPI.as_view()),
     url("^get_images_gallery/$", api.ImagesGalleryAPI.as_view()),
+    url("^bulk_delete_images/$", api.BulkDeleteImagesAPI.as_view()),
 ]
