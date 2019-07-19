@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Menu from './Menu';
+import Menu from '../Menu';
 import {getStyleOptions, getTechniqueOptions} from 'utils';
 import { Form, Row, Col, Radio, Button } from 'react-bootstrap';
 import {connect} from 'react-redux';
 import AsyncSelect from 'react-select/lib/Async';
-import {annotation, auth} from "../actions";
+import {annotation, auth} from "../../actions";
 
 
-class Classification extends React.Component {
+class MyClassification extends React.Component {
 
     state = {
         style: null,
@@ -17,7 +17,9 @@ class Classification extends React.Component {
     }
 
     componentWillMount() {
-        this.props.loadImage(true);
+        if (!this.props.image_for_classification_url) {
+            this.props.loadImage(true);
+        }
     }
 
     onLoadNextImage = (event) => {
@@ -64,6 +66,11 @@ class Classification extends React.Component {
                     </Col>
                     <Col md={4}>
                         <form className='classification-form' onSubmit={::this.onSaveClassification}>
+                        <h2>Классификация</h2>
+                        <p style={{ fontSize: '14px' }}>
+                            Укажите, что Вы видете на картине, а также стиль и технику. 
+                            Если ничего не подходит, нажмите кнопку "Пропустить"
+                        </p>
                         <div className="form-group row">
                             <label htmlFor='classification-style' className="col-sm-3 col-form-label">
                                 Стиль
@@ -110,28 +117,30 @@ class Classification extends React.Component {
                                 })}
                             </div>
                         </div>
-                        <Button type='submit' className='btn btn-primary btn-sm' style={{marginRight: '10px'}}>
+                        <Button type='submit' className='btn btn-primary btn-sm'>
                             Сохранить
                         </Button>
                         <Button type='button' className='btn btn-primary btn-sm' onClick={this.onLoadNextImage}>
                             Пропустить...
                         </Button>
                         {user && user.is_superuser
-                            ?
-                            <div style={{marginTop: '20px'}}>
-                                <Button 
-                                    type='button' 
-                                    id="delete-image" 
-                                    className='btn btn-primary btn-sm' 
-                                    onClick={this.onDeleteImage}
-                                >
-                                    Удалить
-                                </Button>
-                                <a className='btn btn-download' href="/api/classifications/download/">Выгрузить отчёт</a>
-                            </div>
-                            :
-                            null
+                            &&
+                            <Button 
+                                type='button' 
+                                id="delete-image" 
+                                className='btn btn-primary btn-sm' 
+                                onClick={this.onDeleteImage}
+                            >
+                                Удалить
+                            </Button>
                         }
+                        {user && user.is_superuser
+                            &&
+                            <a className='btn btn-primary' href="/api/classifications/download/">Выгрузить отчёт</a>
+                        }
+                        <NavLink to="/classification/help" activeClassName="btn btn-primary" className="btn btn-primary btn-sm">
+                            Помощь
+                        </NavLink>
                         </form>
                     </Col>
                 </Row>
@@ -159,4 +168,4 @@ const mapDispatchToProps = dispatch => {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Classification);
+export default connect(mapStateToProps, mapDispatchToProps)(MyClassification);

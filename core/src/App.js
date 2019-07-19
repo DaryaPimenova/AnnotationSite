@@ -18,7 +18,7 @@ import {
     NotFound,
     MainPage,
     OurGallery
-} from "./components"
+} from "./components";
 
 
 let store = createStore(annotationApp, applyMiddleware(thunk));
@@ -48,8 +48,10 @@ class RootContainerComponent extends Component {
                 <Switch>
                     <LoadingRoute exact path="/" component={MainPage} />
                     <LoadingRoute exact path="/gallery" component={OurGallery} />
-                    <LoadingRoute exact path="/detection" component={Detection} />
-                    <LoadingRoute exact path="/classification" component={Classification} />
+
+                    <LoadingRoute path="/detection" component={Detection} />
+                    <LoadingRoute path="/classification" component={Classification} />
+
                     <LoadingRoute exact path="/statistics" component={Statistics} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />
