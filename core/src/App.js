@@ -48,8 +48,10 @@ class RootContainerComponent extends Component {
                 <Switch>
                     <LoadingRoute exact path="/" component={MainPage} />
                     <LoadingRoute exact path="/gallery" component={OurGallery} />
+
                     <LoadingRoute path="/detection" component={Detection} />
                     <LoadingRoute path="/classification" component={Classification} />
+
                     <LoadingRoute exact path="/statistics" component={Statistics} />
                     <Route exact path="/register" component={SignUpForm} />
                     <Route exact path="/login" component={SignInForm} />
