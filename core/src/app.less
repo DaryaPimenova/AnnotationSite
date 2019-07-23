@@ -391,3 +391,51 @@ input:focus {
   margin-bottom: 20px;
   text-align: center;
 }
+
+#image-classificaion {
+  width: 50%;
+  float: left;
+  padding: 20px;
+}
+
+#image-detection {
+  width: 50%;
+  float: right;
+  padding: 20px;
+}
+
+.main-page-row {
+  padding-top: 50px;
+}
+
+.main-page-header {
+  text-align: center;
+}
+
+ol.goals  {
+  display: block;
+  counter-reset: wslist1;
+  list-style: none;
+}
+
+ol.goals > li {
+  margin: 0 0 1em 3em;
+  position:relative;
+}
+ol.goals > li::before {
+  background: #674FB6;
+  border-radius: 50%;
+  color: #fff;
+  content: counter(wslist1);
+  counter-increment: wslist1;
+  display: inline-block;
+  height: 32px;
+  left: -40px;
+  line-height: 22px;
+  padding: 5px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  transition: all 0.3s ease 0s;
+  width: 22px;
+}

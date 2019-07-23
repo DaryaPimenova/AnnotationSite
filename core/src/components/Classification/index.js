@@ -9,8 +9,8 @@ const ClassificationHelp = () => {
         <Help 
             header="Классификация" 
             description="Чтобы научить ИИ распознавать различные объекты, мы обучаем его на основе набора изображений, каждому из которых присвоен определенный класс. Ваша цель - указать, что видно на изображении, выбрав соответствующий класс из списка." 
-            video_url="/assets/poster.png"
-            poster="/assets/poster.png"
+            video_url="/media/instructions/classification.mp4"
+            poster="/media/main_page/classification.png"
             tool_url="/classification"
         />
     );

@@ -9,8 +9,8 @@ const DetectHelp = () => {
         <Help 
             header="Детекция" 
             description="Чтобы научить ИИ обнаруживать объекты на изображениях, мы предоставляем bounding box. Выберите класс из списка и выделите соответствующий объект с помощью ограничительной рамки." 
-            video_url="/assets/poster.png"
-            poster="/assets/poster.png"
+            video_url="/media/instructions/detection.mp4"
+            poster="/media/main_page/detection.png"
             tool_url="/detection"
         />
     );
