@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Style(models.Model):
-    title = models.CharField('Стиль', max_length=64, default='')
+    title = models.CharField('Стиль', max_length=64, unique=True)
 
     class Meta:
         verbose_name = 'Стиль изображений'

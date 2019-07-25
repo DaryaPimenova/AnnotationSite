@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Technique(models.Model):
-    title = models.CharField('Техника', max_length=64, default='')
+    title = models.CharField('Техника', max_length=64, unique=True)
 
     class Meta:
         verbose_name = 'Техника рисования'
