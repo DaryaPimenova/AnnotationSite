@@ -149,7 +149,7 @@ class Detect extends React.Component {
                                 value={this.state.detection}
                                 onChange={this.onChange}
                                 onSubmit={this.onSubmit}
-                                activeAnnotationComparator={this.activeDetectionsComparator}
+                                activeAnnotationComparator={this.activeDetectionComparator}
                                 activeAnnotations={this.state.activeDetections}
                                 renderSelector={Selector}
                                 renderEditor={this.renderEditor}

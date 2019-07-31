@@ -5,6 +5,7 @@ import {getStyleOptions, getTechniqueOptions} from 'utils';
 import { Form, Row, Col, Radio, Button } from 'react-bootstrap';
 import {connect} from 'react-redux';
 import AsyncSelect from 'react-select/lib/Async';
+import Select from 'react-select';
 import {annotation, auth} from "../../actions";
 
 
@@ -26,6 +27,18 @@ class MyClassification extends React.Component {
         event.preventDefault();
         this.setState({style: null, technique: null, image_class: null});
         this.props.loadImage(true);
+    }
+
+    getClasses = () => {
+        let classes = [];
+        this.props.classes.map((c, i) => {
+            classes[i] = {
+                value: c.pk,
+                label: c.title
+            }
+        });
+
+        return classes;
     }
 
     onSaveClassification = (event) => {
@@ -101,46 +114,40 @@ class MyClassification extends React.Component {
                             <label htmlFor='classification-classes' className="col-sm-3 col-form-label">
                                 Класс
                             </label>
-                            <div id='classification-classes' className="col-sm-9">
-                                {classes.map((el, i) => {
-                                    return (
-                                        <Radio
-                                            key={`default-key-${i}`}
-                                            name='image_class'
-                                            value={el.pk}
-                                            onClick={(e) => this.setState({image_class: e.target.value})}
-                                            checked={this.state.image_class == el.pk}
-                                        >
-                                        {el.title}
-                                        </Radio>
-                                    )
-                                })}
-                            </div>
+                            <Select
+                                id='classification-classes'
+                                className="col-sm-9"
+                                value={this.state.image_class}
+                                options={this.getClasses()}
+                                onChange={e => this.setState({image_class: e.target.value})}
+                            />                                  
                         </div>
-                        <Button type='submit' className='btn btn-primary btn-sm'>
-                            Сохранить
-                        </Button>
-                        <Button type='button' className='btn btn-primary btn-sm' onClick={this.onLoadNextImage}>
-                            Пропустить...
-                        </Button>
-                        {user && user.is_superuser
-                            &&
-                            <Button 
-                                type='button' 
-                                id="delete-image" 
-                                className='btn btn-primary btn-sm' 
-                                onClick={this.onDeleteImage}
-                            >
-                                Удалить
+                        <div style={{marginTop: '20px'}}>
+                            <Button type='submit' className='btn btn-primary btn-sm'>
+                                Сохранить
                             </Button>
-                        }
-                        {user && user.is_superuser
-                            &&
-                            <a className='btn btn-primary' href="/api/classifications/download/">Выгрузить отчёт</a>
-                        }
-                        <NavLink to="/classification/help" activeClassName="btn btn-primary" className="btn btn-primary btn-sm">
-                            Помощь
-                        </NavLink>
+                            <Button type='button' className='btn btn-primary btn-sm' onClick={this.onLoadNextImage}>
+                                Пропустить...
+                            </Button>
+                            {user && user.is_superuser
+                                &&
+                                <Button 
+                                    type='button' 
+                                    id="delete-image" 
+                                    className='btn btn-primary btn-sm' 
+                                    onClick={this.onDeleteImage}
+                                >
+                                    Удалить
+                                </Button>
+                            }
+                            {user && user.is_superuser
+                                &&
+                                <a className='btn btn-primary' href="/api/classifications/download/">Выгрузить отчёт</a>
+                            }
+                            <NavLink to="/classification/help" activeClassName="btn btn-primary" className="btn btn-primary btn-sm">
+                                Помощь
+                            </NavLink>
+                        </div>
                         </form>
                     </Col>
                 </Row>
