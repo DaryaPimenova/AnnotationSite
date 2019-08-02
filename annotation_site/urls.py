@@ -13,6 +13,7 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
     url('admin/', admin.site.urls),
+    url(r'accounts/', include('allauth.urls')),
     url(r'^api/', include(endpoints)),
     url(r'^api/', include(end_acc)),
     url(r'^api/auth/', include('knox.urls')),
