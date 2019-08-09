@@ -5,3 +5,4 @@ staticfiles/
 node_modules/
 /media/annotated_images
 db.sqlite3
+local_settings.py

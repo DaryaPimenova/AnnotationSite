@@ -1,0 +1,14 @@
+from .local_settings import *
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+
+DEBUG = True
+ALLOWED_HOSTS = []
+
+SENTRY_DSN = ''  # При необходимости, получить у администратора
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[DjangoIntegration()],
+)

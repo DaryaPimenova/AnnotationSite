@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'knox',
-    'django_extensions',
 
     'allauth',
     'allauth.account',
@@ -141,3 +140,5 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'login'
 
 LOGOUT_REDIRECT_URL = 'login'
+
+SENTRY_DSN = ''
