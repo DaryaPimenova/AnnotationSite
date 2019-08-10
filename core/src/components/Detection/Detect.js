@@ -140,7 +140,7 @@ class Detect extends React.Component {
             <div>
                 <Menu />
                 <Row className="justify-content-md-center">
-                    <Col md={5}>
+                    <Col md={7}>
                         <div className='image-annotation'>
                             <Annotation                    
                                 src={image_url}
@@ -158,7 +158,7 @@ class Detect extends React.Component {
                             />
                         </div>
                     </Col>
-                    <Col md={4}>
+                    <Col md={3}>
                         <Form className='form-annotation' onSubmit={::this.onSaveDetections}>
                         <h2>Детекция</h2>
                         <p style={{ fontSize: '14px' }}>
@@ -168,6 +168,7 @@ class Detect extends React.Component {
                         {this.state.detections.map((detection, id) => (
                             <Row
                                 className='form-row' 
+                                style={{ marginBottom: '20px' }}
                                 key={`${id}`}               
                                 onMouseOver={this.onMouseOver(detection.data.id)}
                                 onMouseOut={this.onMouseOut(detection.data.id)}
@@ -185,7 +186,11 @@ class Detect extends React.Component {
                                     />
                                 </Col>
                                 <Col>
-                                    <button type="button" className="btn remove-annotation" onClick={() => this.onDelete(id)}>
+                                    <button 
+                                        type="button" 
+                                        className="btn remove-annotation" 
+                                        onClick={() => this.onDelete(id)}
+                                    >
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </Col>
@@ -213,13 +218,9 @@ class Detect extends React.Component {
                                 Удалить
                             </Button>
                         }
-                        {user && user.is_superuser
-                            &&
-                            <a className='btn btn-primary' href="/api/detections/download/">Выгрузить отчёт</a>
-                        }
-                            <NavLink to="/detection/help" activeClassName="btn btn-primary" className="btn btn-primary">
-                                Помощь
-                            </NavLink>
+                        <NavLink to="/detection/help" activeClassName="btn btn-primary" className="btn btn-primary">
+                            Помощь
+                        </NavLink>
                         </div>
                         </Form>
                     </Col>

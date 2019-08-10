@@ -22,6 +22,12 @@ class Statistics extends React.Component {
             <div>
                 <Menu />
                 <div>Cтатистика разметки:</div>
+                <a className='btn btn-primary' href="/api/classifications/download/">
+                    Выгрузить отчёт по классификации
+                </a>
+                <a className='btn btn-primary' href="/api/detections/download/">
+                    Выгрузить отчёт по детекции
+                </a>
                 <ul>
                 {
                     statistics_messages.map((msg, i) => {

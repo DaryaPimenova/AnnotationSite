@@ -12,20 +12,20 @@ class Menu extends React.Component {
             <NavLink to="/" activeClassName="nav-link" className="nav-link">
                 Главная
             </NavLink>,
-            <NavLink to="/gallery" activeClassName="nav-link" className="nav-link">
+            <NavLink to="/gallery" activeClassName="nav-link active" className="nav-link">
                 Галерея
             </NavLink>,
-            <NavLink to="/detection" activeClassName="nav-link" className="nav-link">
+            <NavLink to="/detection" activeClassName="nav-link active" className="nav-link">
                 Детекция
             </NavLink>,
-            <NavLink to="/classification" activeClassName="nav-link" className="nav-link">
+            <NavLink to="/classification" activeClassName="nav-link active" className="nav-link">
                 Классификация
             </NavLink>
         ]
 
         if (isSuperUser) {
             elements.push(
-                <NavLink to="/statistics" activeClassName="nav-link" className="nav-link">
+                <NavLink to="/statistics" activeClassName="nav-link active" className="nav-link">
                     Статистика
                 </NavLink>
             );
@@ -33,10 +33,10 @@ class Menu extends React.Component {
 
         if (!isAuthenticated) {
             elements = elements.concat([
-                <NavLink to="/login" activeClassName="nav-link" className="nav-link">
+                <NavLink to="/login" activeClassName="nav-link active" className="nav-link">
                     Войти
                 </NavLink>,
-                <NavLink exact to="/register" activeClassName="nav-link" className="nav-link">
+                <NavLink exact to="/register" activeClassName="nav-link active" className="nav-link">
                     Зарегистрироваться
                 </NavLink>
             ]);

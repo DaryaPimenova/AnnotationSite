@@ -14,47 +14,51 @@ export default class MainPage extends React.Component {
                 <Row className="justify-content-md-center main-page-row">
                     <Col md={9}>
                         <p id='main-description'>
-                            <b>Idea-mining</b> - система добровольной разметки картин для решения задач искусственного интеллекта. 
-                            Вы выделяете объекты на изображении и подписываете их. Это лёгкий способ релаксации с одной 
-                            стороны и поддержки научных исследований с другой. Сейчас мы решаем две задачи: классификацию 
-                            и детекцию изображений. Вы можете участвовать в любой из них. Чем быстрее мы соберём данные для 
-                            каждой из них, тем раньше здесь появятся новые задачи для вас. Внутри каждой задачи есть 
-                            краткая инструкция на всякий случай.
+                            <b style={{ fontSize: '24px' }}>IdeaMining</b> - система добровольной разметки картин для 
+                            решения задач искусственного интеллекта. Вы выделяете объекты на изображении и подписываете 
+                            их. Это лёгкий способ релаксации с одной стороны и поддержки научных исследований с другой. 
+                            Сейчас мы решаем две задачи: классификацию и детекцию изображений. Вы можете участвовать 
+                            в любой из них. Чем быстрее мы соберём данные для каждой из них, тем раньше здесь появятся 
+                            новые задачи для вас. Внутри каждой задачи есть краткая инструкция на всякий случай.
                         </p>
                     </Col>  
                 </Row>
-                <Row className="justify-content-md-center  main-page-row">
+                <Row className="justify-content-md-center main-page-row">
                     <Col md={9}>
-                        <h2 className='main-page-header'>Классификация</h2>
-                        <img id="image-classificaion" src="media/main_page/classification.png" />
-                        <div id="short-classification-desc">
-                            Вы называете объект, который видите на изображении, можете подписать также, с чем он у вас 
-                            ассоциируется. Например, вы видите молодое дерево, которое, на ваш взгляд, связано с 
-                            юностью или старое дерево, поросшее побегами, которое связано с зарождением новой жизни. 
-                            Если такой ассоциации нет - не страшно, для нас это тоже информация.
+                        <div className="left">
+                            <img id="image-classificaion" src="media/main_page/classification.png" />
                         </div>
-                        <NavLink to="/classification" activeClassName="nav-link" className="nav-link">
-                            Присоединиться к классификации
-                        </NavLink>
+                        <div className="right">
+                            <h2 className='main-page-header'>Классификация</h2>
+                            <div className="short-description">
+                                Вы указываете, что за объект Вы видети на картине, выбрав соответстующий класс. 
+                                Также, Вы можете указать технику и стиль, в котором выполнена картина. 
+                            </div>
+                            <NavLink to="/classification" activeClassName="nav-link" className="nav-link">
+                                Присоединиться к классификации
+                            </NavLink>
+                        </div>
                     </Col>
                 </Row>
                 <Row className="justify-content-md-center  main-page-row">
                     <Col md={9}>
-                        <h2 className='main-page-header'>Детекция</h2>
-                        <img id="image-detection" src="media/main_page/detection.png" />
-                        <div>
-                            Вы выбираете объект на картине с помощью прямоугольника, затем подписываете его называние. 
-                            Если вас кажется, что объект имеет какое-то дополнительное значение - вы пишите под 
-                            названием, что это за значение. Например, женщина с весами в руках может ассоциироваться 
-                            с Фемидой, а голубь в небе - с символом мира. Если такой ассоциации нет - не страшно, 
-                            для нас это тоже информация.
+                        <div className="left">
+                            <h2 className='main-page-header'>Детекция</h2>
+                            <div className="short-description">
+                                Вы выбираете объект на картине с помощью прямоугольника, затем указываете к какому 
+                                классу он относится. Если Вы считаете, что на картине несколько объектов, то можете 
+                                сразу все их отметить.
+                            </div>
+                            <NavLink to="/detection" activeClassName="nav-link" className="nav-link">
+                                Присоединиться к детекции
+                            </NavLink>
                         </div>
-                        <NavLink to="/detection" activeClassName="nav-link" className="nav-link">
-                            Присоединиться к детекции
-                        </NavLink>
+                        <div className="right">
+                            <img id="image-detection" src="media/main_page/detection.png" />
+                        </div>
                     </Col>
                 </Row>
-                <Row className="justify-content-md-center  main-page-row">
+                <Row className="justify-content-md-center  main-page-row" style={{ marginBottom: '100px' }}>
                     <Col md={9}>
                         <h2 className='main-page-header'>Исследование преследует три цели:</h2>
                         <ol className='goals'>

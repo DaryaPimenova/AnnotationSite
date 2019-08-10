@@ -140,11 +140,11 @@ class MyClassification extends React.Component {
                                     Удалить
                                 </Button>
                             }
-                            {user && user.is_superuser
-                                &&
-                                <a className='btn btn-primary' href="/api/classifications/download/">Выгрузить отчёт</a>
-                            }
-                            <NavLink to="/classification/help" activeClassName="btn btn-primary" className="btn btn-primary btn-sm">
+                            <NavLink 
+                                to="/classification/help" 
+                                activeClassName="btn btn-primary" 
+                                className="btn btn-primary btn-sm"
+                            >
                                 Помощь
                             </NavLink>
                         </div>
