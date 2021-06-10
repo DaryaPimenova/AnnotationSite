@@ -1,4 +1,4 @@
-Django==2.1.7
+Django==2.2.24
 django-allauth==0.39.1
 django-extensions==2.2.1
 django-rest-knox==3.6.0
